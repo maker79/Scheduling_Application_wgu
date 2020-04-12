@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomersController">
+   <children>
+      <Label fx:id="customersLbl" layoutX="340.0" layoutY="55.0" text="Customers">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <TableView fx:id="customersTbl" layoutX="125.0" layoutY="109.0" prefHeight="316.0" prefWidth="550.0">
+        <columns>
+          <TableColumn fx:id="customerIdTblColumn" prefWidth="137.5" text="Customer ID " />
+          <TableColumn fx:id="nameTblColumn" prefWidth="137.5" text="Name" />
+            <TableColumn fx:id="addressTblColumn" prefWidth="137.5" text="Address" />
+            <TableColumn fx:id="phoneNumberTblColumn" prefWidth="137.5" text="Phone Number" />
+        </columns>
+      </TableView>
+      <Button layoutX="605.0" layoutY="445.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleDeleteCustomer" prefHeight="30.0" prefWidth="70.0" text="Delete" />
+      <Button layoutX="530.0" layoutY="445.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleModifyCustomer" prefHeight="30.0" prefWidth="70.0" text="Modify" />
+      <Button layoutX="453.0" layoutY="445.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleAddCustomer" prefHeight="30.0" prefWidth="70.0" text="Add" />
+      <Button layoutX="605.0" layoutY="487.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleExitToMainScreen" prefHeight="30.0" prefWidth="70.0" text="Exit" />
+   </children>
+</AnchorPane>

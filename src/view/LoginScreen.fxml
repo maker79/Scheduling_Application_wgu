@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginScreenController">
+   <children>
+      <Label fx:id="welcomeLbl" layoutX="89.0" layoutY="74.0" prefHeight="54.0" prefWidth="175.0" text="Welcome">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+      <Label fx:id="userNameLbl" layoutX="88.0" layoutY="170.0" text="User Name">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="passwordLbl" layoutX="88.0" layoutY="209.0" text="Password">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="userNameTxt" layoutX="199.0" layoutY="169.0" prefHeight="26.0" prefWidth="189.0" />
+      <PasswordField fx:id="passwordTxt" layoutX="198.0" layoutY="209.0" prefHeight="26.0" prefWidth="190.0" />
+      <Button layoutX="320.0" layoutY="273.0" mnemonicParsing="false" onAction="#handleSignIn" prefHeight="26.0" prefWidth="67.0" text="Sign In" />
+   </children>
+</AnchorPane>
