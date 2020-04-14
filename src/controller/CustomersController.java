@@ -37,8 +37,12 @@ public class CustomersController {
     private TableColumn<?, ?> phoneNumberTblColumn;
 
     @FXML
-    void handleAddCustomer(ActionEvent event) {
+    void handleAddCustomer(ActionEvent event) throws IOException {
 
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/view/AddCustomer.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
 
     @FXML
@@ -57,7 +61,12 @@ public class CustomersController {
     }
 
     @FXML
-    void handleModifyCustomer(ActionEvent event) {
+    void handleModifyCustomer(ActionEvent event) throws IOException {
+
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/view/ModifyCustomer.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
 
     }
 }
