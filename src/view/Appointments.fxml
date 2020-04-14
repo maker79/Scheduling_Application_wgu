@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1123.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentsController">
+   <children>
+      <SplitPane dividerPositions="0.4335414808206958" layoutY="220.0" prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <TableView fx:id="customersTbl" layoutX="24.0" layoutY="103.0" prefHeight="392.0" prefWidth="435.0">
+                    <columns>
+                      <TableColumn fx:id="customerIdTblColumn" prefWidth="108.75" text="Customer ID" />
+                      <TableColumn fx:id="customerNameTblColumn" prefWidth="108.75" text="Name" />
+                        <TableColumn fx:id="customerAddressTblColumn" prefWidth="108.75" text="Address" />
+                        <TableColumn fx:id="customerPhoneNumTblColumn" prefWidth="108.75" text="Phone Number" />
+                    </columns>
+                  </TableView>
+                  <Label layoutX="182.0" layoutY="14.0" text="Customers">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="68.0" layoutY="59.0" text="Select a cusotmer to manage or view appointments" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="714.0">
+               <children>
+                  <Label layoutX="235.0" layoutY="14.0" text="Appointments">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <TableView fx:id="appointmentsTbl" layoutX="24.0" layoutY="103.0" prefHeight="392.0" prefWidth="590.0">
+                    <columns>
+                      <TableColumn fx:id="appCustomerTblColumn" prefWidth="118.0" text="Customer" />
+                      <TableColumn fx:id="appTitleTblColumn" prefWidth="118.0" text="Title" />
+                        <TableColumn fx:id="appTypeTblColumn" prefWidth="118.0" text="Type" />
+                        <TableColumn fx:id="appStartTblColumn" prefWidth="118.0" text="Start" />
+                        <TableColumn fx:id="appEndTblColumn" prefWidth="118.0" text="End" />
+                    </columns>
+                  </TableView>
+                  <RadioButton fx:id="upcomingMonthBtn" layoutX="24.0" layoutY="63.0" mnemonicParsing="false" selected="true" text="For upcoming month">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="appointmentsBtns" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="upcomingWeekBtn" layoutX="207.0" layoutY="63.0" mnemonicParsing="false" selected="true" text="For upcoming week" toggleGroup="$appointmentsBtns" />
+                  <Button fx:id="deleteAppointmentBtn" layoutX="534.0" layoutY="510.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleDeleteAppointment" prefWidth="80.0" text="Delete" />
+                  <Button fx:id="modifyAppointmentBtn" layoutX="441.0" layoutY="510.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleModifyAppointment" prefWidth="80.0" text="Modify" />
+                  <Button fx:id="addAppointmentBtn" layoutX="347.0" layoutY="510.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleAddNewAppointment" prefWidth="80.0" text="Add" />
+                  <Button fx:id="backBtn" layoutX="534.0" layoutY="553.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleGoBackToMainScreen" prefWidth="80.0" text="Back" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

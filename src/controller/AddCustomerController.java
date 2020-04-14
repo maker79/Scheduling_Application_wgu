@@ -58,7 +58,7 @@ public class AddCustomerController {
     private ComboBox<?> countryChoiceBox;
 
     @FXML
-    private Button cancelAddCusotmerBtn;
+    private Button cancelAddCustomerBtn;
 
     @FXML
     private Button saveCustomerBtn;

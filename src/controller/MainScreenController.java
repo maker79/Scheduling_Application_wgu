@@ -30,6 +30,11 @@ public class MainScreenController {
     @FXML
     void handleAppointmentsBtn(ActionEvent event) throws IOException {
 
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
+
     }
 
     @FXML

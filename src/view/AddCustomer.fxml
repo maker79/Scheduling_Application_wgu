@@ -46,7 +46,7 @@
             <ComboBox fx:id="countryChoiceBox" maxHeight="-Infinity" prefHeight="35.0" prefWidth="203.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <Button fx:id="cancelAddCusotmerBtn" layoutX="425.0" layoutY="423.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onActionCancelAddCustomer" prefWidth="80.0" text="Cancel" />
+      <Button fx:id="cancelAddCustomerBtn" layoutX="425.0" layoutY="423.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onActionCancelAddCustomer" prefWidth="80.0" text="Cancel" />
       <Button fx:id="saveCustomerBtn" layoutX="335.0" layoutY="423.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onActionSaveAddCustomer" prefWidth="80.0" text="Save" />
    </children>
 </AnchorPane>
