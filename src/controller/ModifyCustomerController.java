@@ -62,6 +62,12 @@ public class ModifyCustomerController {
 
     @FXML
     private Button saveModifyCustomerBtn;
+    @FXML
+    private TextField countryTxt;
+    @FXML
+    private ComboBox cityChoiceBox;
+    @FXML
+    private Label addCustomerLbl;
 
     @FXML
     void onActionCancelModifyCustomer(ActionEvent event) throws IOException {
@@ -78,4 +84,7 @@ public class ModifyCustomerController {
 
     }
 
+    @FXML
+    private void onActionSetCity(ActionEvent actionEvent) {
+    }
 }

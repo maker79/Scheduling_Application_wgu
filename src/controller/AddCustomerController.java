@@ -62,6 +62,10 @@ public class AddCustomerController {
 
     @FXML
     private Button saveCustomerBtn;
+    @FXML
+    private TextField countryTxt;
+    @FXML
+    private ComboBox cityChoiceBox;
 
     @FXML
     void onActionCancelAddCustomer(ActionEvent event) throws IOException {
@@ -75,5 +79,9 @@ public class AddCustomerController {
     @FXML
     void onActionSaveAddCustomer(ActionEvent event) {
 
+    }
+
+    @FXML
+    private void onActionSetCity(ActionEvent actionEvent) {
     }
 }
