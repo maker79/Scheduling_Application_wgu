@@ -5,6 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import utils.DatabaseConnectionManager;
+
+import java.sql.SQLException;
 
 public class SchedulingApp extends Application {
 
@@ -17,8 +20,15 @@ public class SchedulingApp extends Application {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        // make a connection to a database
+        DatabaseConnectionManager.makeConnection();
+
         launch(args);
+        // closing a connection
+        DatabaseConnectionManager.closeConnection();
+
+
 
     }
 
