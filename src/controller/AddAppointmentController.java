@@ -5,10 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,27 +17,22 @@ public class AddAppointmentController {
 
     @FXML
     private TextField addAppointmentTxt;
-
     @FXML
     private TextField titleTxt;
-
     @FXML
     private ChoiceBox<?> typeChoiceBox;
-
-    @FXML
-    private ChoiceBox<?> startChoiceBox;
-
-    @FXML
-    private ChoiceBox<?> endChoiceBox;
-
     @FXML
     private DatePicker dateDatePicker;
-
     @FXML
     private Button cancelAddAppointmentBtn;
-
     @FXML
     private Button saveAddAppointmentBtn;
+    @FXML
+    private ComboBox customerComboBox;
+    @FXML
+    private ComboBox startComboBox;
+    @FXML
+    private ComboBox endComboBox;
 
     @FXML
     void handleCancelAddingAppointment(ActionEvent event) throws IOException {

@@ -18,11 +18,10 @@ public class DatabaseConnectionManager {
     private static final String USER_NAME = "U04R8N";
     private static final String PASSWORD = "53688320548";
 
-    public static Connection makeConnection() throws ClassNotFoundException, SQLException {
-        Class.forName(MYSQL_JDBC_DRIVER);
+    public static void makeConnection() throws ClassNotFoundException, SQLException {
+//        Class.forName(MYSQL_JDBC_DRIVER);
         connection = (Connection) DriverManager.getConnection(JDBC_URL, USER_NAME, PASSWORD);
         System.out.println("Connection successful...");
-        return connection;
     }
 
     public static void closeConnection() throws SQLException {

@@ -68,6 +68,8 @@ public class AppointmentsController {
 
     @FXML
     private Button backBtn;
+    @FXML
+    private Button clearBtn;
 
     @FXML
     void handleAddNewAppointment(ActionEvent event) throws IOException {
@@ -102,5 +104,9 @@ public class AppointmentsController {
         stage.setScene(new Scene(scene));
         stage.show();
 
+    }
+
+    @FXML
+    private void handleClearCustomerTable(ActionEvent actionEvent) {
     }
 }

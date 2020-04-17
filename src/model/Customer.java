@@ -11,14 +11,6 @@ public class Customer {
     private String postalCode;
     private String phone;
 
-    public Customer() {
-    }
-
-    public Customer(String customerId, String customerName) {
-        this.customerId = customerId;
-        this.customerName = customerName;
-    }
-
     public Customer(String customerId, String customerName, String address, String address2, City city, String country, String postalCode, String phone) {
         this.customerId = customerId;
         this.customerName = customerName;

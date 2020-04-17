@@ -18,10 +18,9 @@
                <children>
                   <TableView fx:id="customersTbl" layoutX="24.0" layoutY="103.0" prefHeight="392.0" prefWidth="435.0">
                     <columns>
-                      <TableColumn fx:id="customerIdTblColumn" prefWidth="108.75" text="Customer ID" />
-                      <TableColumn fx:id="customerNameTblColumn" prefWidth="108.75" text="Name" />
-                        <TableColumn fx:id="customerAddressTblColumn" prefWidth="108.75" text="Address" />
-                        <TableColumn fx:id="customerPhoneNumTblColumn" prefWidth="108.75" text="Phone Number" />
+                      <TableColumn fx:id="customerIdTblColumn" prefWidth="145.0" text="Customer ID" />
+                      <TableColumn fx:id="customerNameTblColumn" prefWidth="145.0" text="Name" />
+                        <TableColumn fx:id="customerPhoneNumTblColumn" prefWidth="145.0" text="Phone Number" />
                     </columns>
                   </TableView>
                   <Label layoutX="182.0" layoutY="14.0" text="Customers">
@@ -30,6 +29,7 @@
                      </font>
                   </Label>
                   <Label layoutX="68.0" layoutY="59.0" text="Select a cusotmer to manage or view appointments" />
+                  <Button fx:id="clearBtn" layoutX="379.0" layoutY="508.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleClearCustomerTable" prefWidth="80.0" text="Clear" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="714.0">
@@ -48,16 +48,17 @@
                         <TableColumn fx:id="appEndTblColumn" prefWidth="118.0" text="End" />
                     </columns>
                   </TableView>
-                  <RadioButton fx:id="upcomingMonthBtn" layoutX="24.0" layoutY="63.0" mnemonicParsing="false" selected="true" text="For upcoming month">
+                  <RadioButton fx:id="upcomingMonthBtn" layoutX="24.0" layoutY="63.0" mnemonicParsing="false" text="For current month">
                      <toggleGroup>
                         <ToggleGroup fx:id="appointmentsBtns" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton fx:id="upcomingWeekBtn" layoutX="207.0" layoutY="63.0" mnemonicParsing="false" selected="true" text="For upcoming week" toggleGroup="$appointmentsBtns" />
+                  <RadioButton fx:id="upcomingWeekBtn" layoutX="189.0" layoutY="63.0" mnemonicParsing="false" text="For current week" toggleGroup="$appointmentsBtns" />
                   <Button fx:id="deleteAppointmentBtn" layoutX="534.0" layoutY="510.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleDeleteAppointment" prefWidth="80.0" text="Delete" />
                   <Button fx:id="modifyAppointmentBtn" layoutX="441.0" layoutY="510.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleModifyAppointment" prefWidth="80.0" text="Modify" />
                   <Button fx:id="addAppointmentBtn" layoutX="347.0" layoutY="510.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleAddNewAppointment" prefWidth="80.0" text="Add" />
                   <Button fx:id="backBtn" layoutX="534.0" layoutY="553.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleGoBackToMainScreen" prefWidth="80.0" text="Back" />
+                  <RadioButton layoutX="342.0" layoutY="63.0" mnemonicParsing="false" selected="true" text="All" toggleGroup="$appointmentsBtns" />
                </children>
             </AnchorPane>
         </items>

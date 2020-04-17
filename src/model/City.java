@@ -4,7 +4,7 @@ public class City {
 
     private int cityId;
     private String city;
-    private int countryId;
+    private int countryName; // maybe change to countryName
 
     public City() {
     }
@@ -18,10 +18,10 @@ public class City {
         this.city = city;
     }
 
-    public City(int cityId, String city, int countryId) {
+    public City(int cityId, String city, int countryName) {
         this.cityId = cityId;
         this.city = city;
-        this.countryId = countryId;
+        this.countryName = countryName;
     }
 
     public int getCityId() {
@@ -40,11 +40,11 @@ public class City {
         this.city = city;
     }
 
-    public int getCountryId() {
-        return countryId;
+    public int getCountryName() {
+        return countryName;
     }
 
-    public void setCountryId(int countryId) {
-        this.countryId = countryId;
+    public void setCountryName(int countryName) {
+        this.countryName = countryName;
     }
 }

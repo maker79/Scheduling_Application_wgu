@@ -25,7 +25,7 @@ public class MainScreenController {
     private Button reportsBtn;
 
     @FXML
-    private Button logFilesBtn;
+    private Button logOffBtn;
 
     @FXML
     void handleAppointmentsBtn(ActionEvent event) throws IOException {
@@ -47,7 +47,12 @@ public class MainScreenController {
     }
 
     @FXML
-    void handleLogFilesBtn(ActionEvent event) {
+    void handleLogOff(ActionEvent event) throws IOException {
+
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/view/LoginScreen.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
 
     }
 

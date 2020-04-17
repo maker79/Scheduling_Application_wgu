@@ -2,24 +2,17 @@ package model;
 
 public class Appointment {
 
-    private String appointmentId;
-    private Customer customer;
+    private int appointmentId;
+    private int customerId;
     private String title;
     private String description;
     private String start;
     private String end;
     private String user;
 
-    public Appointment() {
-    }
-
-    public Appointment(String appointmentId) {
+    public Appointment(int appointmentId, int customerId, String title, String description, String start, String end, String user) {
         this.appointmentId = appointmentId;
-    }
-
-    public Appointment(String appointmentId, Customer customer, String title, String description, String start, String end, String user) {
-        this.appointmentId = appointmentId;
-        this.customer = customer;
+        this.customerId = customerId;
         this.title = title;
         this.description = description;
         this.start = start;
@@ -27,20 +20,20 @@ public class Appointment {
         this.user = user;
     }
 
-    public String getAppointmentId() {
+    public int getAppointmentId() {
         return appointmentId;
     }
 
-    public void setAppointmentId(String appointmentId) {
+    public void setAppointmentId(int appointmentId) {
         this.appointmentId = appointmentId;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public int getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
     public String getTitle() {
