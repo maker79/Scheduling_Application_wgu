@@ -29,4 +29,8 @@ public class DatabaseConnectionManager {
         System.out.println("Connection closed successfully...");
     }
 
+    public static java.sql.Connection getConnection(){
+        return connection;
+    }
+
 }
