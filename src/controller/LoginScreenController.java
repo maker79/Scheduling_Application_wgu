@@ -11,9 +11,12 @@ import model.User;
 import utils.DatabaseConnectionManager;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class LoginScreenController {
 
@@ -59,6 +62,7 @@ public class LoginScreenController {
         String username = userNameTxt.getText();
         String password = passwordTxt.getText();
         boolean validateUser = validateLoginAttempt(username, password);
+        Locale serbian = new Locale("sr", "SR");
 
         if(username.isEmpty() || password.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -67,6 +71,8 @@ public class LoginScreenController {
             alert.showAndWait();
         }
         else if (validateUser) {
+            ResourceBundle resourceBundle = ResourceBundle.getBundle("schedulingApplication.src.lang/", Locale.getDefault());
+
                 stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
                 scene = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
                 stage.setScene(new Scene(scene));
@@ -77,6 +83,7 @@ public class LoginScreenController {
                 alert.showAndWait();
             }
     }
+
 
 //    public static User getCurrentUser(){
 //        return currentUser;
