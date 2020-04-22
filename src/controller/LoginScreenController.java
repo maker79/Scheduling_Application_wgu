@@ -36,7 +36,6 @@ public class LoginScreenController {
     @FXML
     private Button loginBtn;
 
-//    private static User currentUser;
 
     public static Boolean validateLoginAttempt(String username, String password) {
 
@@ -62,16 +61,19 @@ public class LoginScreenController {
         String username = userNameTxt.getText();
         String password = passwordTxt.getText();
         boolean validateUser = validateLoginAttempt(username, password);
-        Locale serbian = new Locale("sr", "SR");
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("lang/Nat", Locale.getDefault());
 
         if(username.isEmpty() || password.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Login Error");
-            alert.setContentText("Username or password field cannot be empty!");
+            alert.setTitle(resourceBundle.getString("errorTitle"));
+            alert.setContentText(resourceBundle.getString("errorMessage"));
             alert.showAndWait();
         }
         else if (validateUser) {
-            ResourceBundle resourceBundle = ResourceBundle.getBundle("schedulingApplication.src.lang/", Locale.getDefault());
+            welcomeLbl.setText(resourceBundle.getString("welcome"));
+            userNameLbl.setText(resourceBundle.getString("username"));
+            passwordLbl.setText(resourceBundle.getString("password"));
+            loginBtn.setText(resourceBundle.getString("login"));
 
                 stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
                 scene = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
@@ -79,7 +81,8 @@ public class LoginScreenController {
                 stage.show();
         } else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setContentText("Invalid user name or password");
+                alert.setTitle(resourceBundle.getString("warningTitle"));
+                alert.setContentText(resourceBundle.getString("warningMessage"));
                 alert.showAndWait();
             }
     }
