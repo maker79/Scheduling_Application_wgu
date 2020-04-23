@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
@@ -48,7 +49,9 @@ public class MainScreenController {
 
     @FXML
     void handleLogOff(ActionEvent event) throws IOException {
-
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("Are you sure you want to logoff?");
+        alert.showAndWait();
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/LoginScreen.fxml"));
         stage.setScene(new Scene(scene));

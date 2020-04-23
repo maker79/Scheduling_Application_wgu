@@ -3,6 +3,7 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -18,7 +19,7 @@ import java.sql.SQLException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class LoginScreenController {
+public class LoginScreenController implements Initializable {
 
     Stage stage;
     Parent scene;
@@ -35,6 +36,8 @@ public class LoginScreenController {
     private Label passwordLbl;
     @FXML
     private Button loginBtn;
+
+    ResourceBundle resourceBundle = ResourceBundle.getBundle("lang/Nat", Locale.getDefault());
 
 
     public static Boolean validateLoginAttempt(String username, String password) {
@@ -61,7 +64,6 @@ public class LoginScreenController {
         String username = userNameTxt.getText();
         String password = passwordTxt.getText();
         boolean validateUser = validateLoginAttempt(username, password);
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("lang/Nat", Locale.getDefault());
 
         if(username.isEmpty() || password.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -70,21 +72,26 @@ public class LoginScreenController {
             alert.showAndWait();
         }
         else if (validateUser) {
-            welcomeLbl.setText(resourceBundle.getString("welcome"));
-            userNameLbl.setText(resourceBundle.getString("username"));
-            passwordLbl.setText(resourceBundle.getString("password"));
-            loginBtn.setText(resourceBundle.getString("login"));
-
-                stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-                scene = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
-                stage.setScene(new Scene(scene));
-                stage.show();
+            stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
         } else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle(resourceBundle.getString("warningTitle"));
                 alert.setContentText(resourceBundle.getString("warningMessage"));
                 alert.showAndWait();
             }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        welcomeLbl.setText(resourceBundle.getString("welcome"));
+        userNameLbl.setText(resourceBundle.getString("username"));
+        passwordLbl.setText(resourceBundle.getString("password"));
+        loginBtn.setText(resourceBundle.getString("login"));
+
     }
 
 

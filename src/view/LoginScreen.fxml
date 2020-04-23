@@ -9,23 +9,23 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginScreenController">
    <children>
-      <Label fx:id="welcomeLbl" layoutX="89.0" layoutY="74.0" prefHeight="54.0" prefWidth="175.0" text="Welcome">
+      <Label fx:id="welcomeLbl" layoutX="89.0" layoutY="74.0" prefHeight="54.0" prefWidth="312.0" text="Welcome">
          <font>
             <Font name="System Bold" size="36.0" />
          </font>
       </Label>
-      <Label fx:id="userNameLbl" layoutX="88.0" layoutY="170.0" text="Username">
+      <Label fx:id="userNameLbl" layoutX="88.0" layoutY="170.0" prefHeight="25.0" prefWidth="112.0" text="Username">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label fx:id="passwordLbl" layoutX="88.0" layoutY="209.0" text="Password">
+      <Label fx:id="passwordLbl" layoutX="88.0" layoutY="209.0" prefHeight="25.0" prefWidth="112.0" text="Password">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="userNameTxt" layoutX="199.0" layoutY="169.0" prefHeight="26.0" prefWidth="189.0" />
-      <PasswordField fx:id="passwordTxt" layoutX="198.0" layoutY="209.0" prefHeight="26.0" prefWidth="190.0" />
-      <Button fx:id="loginBtn" layoutX="320.0" layoutY="273.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="26.0" prefWidth="67.0" text="Login" />
+      <TextField fx:id="userNameTxt" layoutX="216.0" layoutY="167.0" prefHeight="26.0" prefWidth="189.0" />
+      <PasswordField fx:id="passwordTxt" layoutX="215.0" layoutY="206.0" prefHeight="26.0" prefWidth="190.0" />
+      <Button fx:id="loginBtn" layoutX="293.0" layoutY="272.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="31.0" prefWidth="112.0" text="Login" />
    </children>
 </AnchorPane>
