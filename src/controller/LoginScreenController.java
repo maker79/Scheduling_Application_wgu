@@ -10,9 +10,11 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.User;
 import utils.DatabaseConnectionManager;
+import utils.DatabaseQuery;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,9 +45,12 @@ public class LoginScreenController implements Initializable {
     public static Boolean validateLoginAttempt(String username, String password) {
 
         try{
+            Connection connection = DatabaseConnectionManager.getConnection();
             String sqlQuery = "SELECT * FROM user WHERE userName ='" + username + "' AND password ='" + password + "'";
-            PreparedStatement preparedStatement = DatabaseConnectionManager.getConnection().prepareStatement(sqlQuery);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            DatabaseQuery.setPreparedStatement(connection, sqlQuery);
+            PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
+            preparedStatement.execute();
+            ResultSet resultSet = preparedStatement.getResultSet();
 
             while(resultSet.next()){
                 User currentUser = new User();
@@ -94,8 +99,4 @@ public class LoginScreenController implements Initializable {
 
     }
 
-
-//    public static User getCurrentUser(){
-//        return currentUser;
-//    }
 }

@@ -49,6 +49,7 @@ public class MainScreenController {
 
     @FXML
     void handleLogOff(ActionEvent event) throws IOException {
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setContentText("Are you sure you want to logoff?");
         alert.showAndWait();
