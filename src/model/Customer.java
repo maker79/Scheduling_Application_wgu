@@ -2,7 +2,7 @@ package model;
 
 public class Customer {
 
-    private String customerId;
+    private int customerId;
     private String customerName;
     private String address;
     private String address2;
@@ -11,7 +11,7 @@ public class Customer {
     private String postalCode;
     private String phone;
 
-    public Customer(String customerId, String customerName, String address, String address2, City city, String country, String postalCode, String phone) {
+    public Customer(int customerId, String customerName, String address, String address2, City city, String country, String postalCode, String phone) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.address = address;
@@ -22,11 +22,18 @@ public class Customer {
         this.phone = phone;
     }
 
-    public String getCustomerId() {
+    public Customer(int customerId, String customerName, String address, String phone) {
+        this.customerId = customerId;
+        this.customerName = customerName;
+        this.address = address;
+        this.phone = phone;
+    }
+
+    public int getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
@@ -85,4 +92,5 @@ public class Customer {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
 }
