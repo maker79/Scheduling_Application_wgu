@@ -46,9 +46,11 @@ public class LoginScreenController implements Initializable {
 
         try{
             Connection connection = DatabaseConnectionManager.getConnection();
-            String sqlQuery = "SELECT * FROM user WHERE userName ='" + username + "' AND password ='" + password + "'";
+            String sqlQuery = "SELECT * FROM user WHERE userName = ? AND password = ?";
             DatabaseQuery.setPreparedStatement(connection, sqlQuery);
             PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getResultSet();
 

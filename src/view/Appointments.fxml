@@ -48,17 +48,17 @@
                         <TableColumn fx:id="appEndTblColumn" prefWidth="118.0" text="End" />
                     </columns>
                   </TableView>
-                  <RadioButton fx:id="upcomingMonthBtn" layoutX="24.0" layoutY="63.0" mnemonicParsing="false" text="For current month">
+                  <RadioButton fx:id="currentMonthBtn" layoutX="24.0" layoutY="63.0" mnemonicParsing="false" onAction="#onActionCurrentMonthBtnSelected" text="For current month">
                      <toggleGroup>
                         <ToggleGroup fx:id="appointmentsBtns" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton fx:id="upcomingWeekBtn" layoutX="189.0" layoutY="63.0" mnemonicParsing="false" text="For current week" toggleGroup="$appointmentsBtns" />
+                  <RadioButton fx:id="currentWeekBtn" layoutX="189.0" layoutY="63.0" mnemonicParsing="false" onAction="#onActionCurrentWeekBtnSelected" text="For current week" toggleGroup="$appointmentsBtns" />
                   <Button fx:id="deleteAppointmentBtn" layoutX="534.0" layoutY="510.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleDeleteAppointment" prefWidth="80.0" text="Delete" />
                   <Button fx:id="modifyAppointmentBtn" layoutX="441.0" layoutY="510.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleModifyAppointment" prefWidth="80.0" text="Modify" />
                   <Button fx:id="addAppointmentBtn" layoutX="347.0" layoutY="510.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleAddNewAppointment" prefWidth="80.0" text="Add" />
                   <Button fx:id="backBtn" layoutX="534.0" layoutY="553.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleGoBackToMainScreen" prefWidth="80.0" text="Back" />
-                  <RadioButton layoutX="342.0" layoutY="63.0" mnemonicParsing="false" selected="true" text="All" toggleGroup="$appointmentsBtns" />
+                  <RadioButton fx:id="allAppointmentsBtn" layoutX="342.0" layoutY="63.0" mnemonicParsing="false" onAction="#onActionAllBtnSelected" selected="true" text="All" toggleGroup="$appointmentsBtns" />
                </children>
             </AnchorPane>
         </items>

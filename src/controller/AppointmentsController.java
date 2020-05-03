@@ -1,75 +1,109 @@
 package controller;
 
+import com.mysql.cj.xdevapi.SqlStatement;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.util.converter.LocalDateTimeStringConverter;
+import model.Appointment;
+import model.Customer;
+import utils.DatabaseConnectionManager;
+import utils.DatabaseQuery;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ResourceBundle;
 
-public class AppointmentsController {
+public class AppointmentsController implements Initializable {
 
     Stage stage;
     Parent scene;
 
     @FXML
-    private TableView<?> customersTbl;
-
+    private TableView<Customer> customersTbl;
     @FXML
-    private TableColumn<?, ?> customerIdTblColumn;
-
+    private TableColumn<Customer, Integer> customerIdTblColumn;
     @FXML
-    private TableColumn<?, ?> customerNameTblColumn;
-
+    private TableColumn<Customer, String> customerNameTblColumn;
     @FXML
-    private TableColumn<?, ?> customerAddressTblColumn;
-
+    private TableColumn<Customer, String> customerPhoneNumTblColumn;
     @FXML
-    private TableColumn<?, ?> customerPhoneNumTblColumn;
-
+    private TableView<Appointment> appointmentsTbl;
     @FXML
-    private TableView<?> appointmentsTbl;
-
+    private TableColumn<Customer, String> appCustomerTblColumn;
     @FXML
-    private TableColumn<?, ?> appCustomerTblColumn;
-
+    private TableColumn<Appointment, String> appTitleTblColumn;
     @FXML
-    private TableColumn<?, ?> appTitleTblColumn;
-
+    private TableColumn<Appointment, String> appTypeTblColumn;
     @FXML
-    private TableColumn<?, ?> appTypeTblColumn;
-
+    private TableColumn<Appointment, LocalDateTime> appStartTblColumn;
     @FXML
-    private TableColumn<?, ?> appStartTblColumn;
-
+    private TableColumn<Appointment, LocalDateTime> appEndTblColumn;
     @FXML
-    private TableColumn<?, ?> appEndTblColumn;
-
-    @FXML
-    private RadioButton upcomingMonthBtn;
-
+    private RadioButton currentMonthBtn;
     @FXML
     private ToggleGroup appointmentsBtns;
-
     @FXML
-    private RadioButton upcomingWeekBtn;
-
+    private RadioButton currentWeekBtn;
+    @FXML
+    private RadioButton allAppointmentsBtn;
     @FXML
     private Button deleteAppointmentBtn;
-
     @FXML
     private Button modifyAppointmentBtn;
-
     @FXML
     private Button addAppointmentBtn;
-
     @FXML
     private Button backBtn;
     @FXML
     private Button clearBtn;
+
+
+    // Customer side of the screen
+
+    @FXML
+    private void handleClearCustomerTable(ActionEvent actionEvent) {
+    }
+
+    // Appointments side of the screen
+
+    @FXML
+    private void onActionCurrentMonthBtnSelected(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    private void onActionCurrentWeekBtnSelected(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    private void onActionAllBtnSelected(ActionEvent actionEvent) {
+
+        if(allAppointmentsBtn.isSelected()){
+            appointmentsTbl.setItems(getAllAppointments());
+            appCustomerTblColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+            appTitleTblColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+            appTypeTblColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+            appStartTblColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
+            appEndTblColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
+
+        }
+
+
+    }
 
     @FXML
     void handleAddNewAppointment(ActionEvent event) throws IOException {
@@ -106,7 +140,47 @@ public class AppointmentsController {
 
     }
 
-    @FXML
-    private void handleClearCustomerTable(ActionEvent actionEvent) {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        customersTbl.setItems(CustomersController.getAllCustomers());
+        customerIdTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        customerNameTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        customerPhoneNumTblColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+
+
+    }
+
+    /*
+    These methods will handle queries
+     */
+
+    public static ObservableList<Appointment> getAllAppointments(){
+
+        ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+        try{
+            Connection connection = DatabaseConnectionManager.getConnection();
+            String sqlQuery = "SELECT appointment.appointmentId, appointment.title, appointment.type, appointment.start, appointment.end, customer.name " +
+                    "FROM appointment INNER JOIN customer ON appointment.customerId=customer.customerId";
+            DatabaseQuery.setPreparedStatement(connection, sqlQuery);
+            PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
+            preparedStatement.execute();
+
+            ResultSet resultSet = preparedStatement.getResultSet();
+            while (resultSet.next()){
+                Appointment appointment = new Appointment(
+                        resultSet.getString("title"),
+                        resultSet.getString("type"),
+                        resultSet.getTimestamp("start").toLocalDateTime(),
+                        LocalDateTime.parse(resultSet.getString("end")),
+                        resultSet.getString("name")
+                );
+                allAppointments.add(appointment);
+            }
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return allAppointments;
     }
 }

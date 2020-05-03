@@ -58,8 +58,22 @@ public class CustomersController implements Initializable {
         stage.show();
     }
 
+    // This method will delete a customer from the database
     @FXML
     void handleDeleteCustomer(ActionEvent event) {
+        int selectedItem = customersTbl.getSelectionModel().getSelectedIndex();
+        try {
+            Connection connection = DatabaseConnectionManager.getConnection();
+            String deleteStatement = "DELETE FROM customer WHERE customerId = ?";
+            DatabaseQuery.setPreparedStatement(connection, deleteStatement);
+            PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
+            preparedStatement.setString(1, String.valueOf(selectedItem));
+            preparedStatement.execute();
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
 
     }
 
@@ -84,7 +98,7 @@ public class CustomersController implements Initializable {
     }
 
     // This method will get all the customers that are in our database
-    public ObservableList<Customer> getAllCustomers() {
+    public static ObservableList<Customer> getAllCustomers() {
 
         ObservableList<Customer> allOfTheCustomers = FXCollections.observableArrayList();
 
@@ -107,13 +121,7 @@ public class CustomersController implements Initializable {
                 );
                 allOfTheCustomers.add(customer);
 
-                // to check that customer is being retrieved before populate the Customer table
-                System.out.println("Customer: " + resultSet.getInt("customerId") +
-                                    " | " + resultSet.getString("customerName") +
-                                    " | " + resultSet.getString("address") +
-                                    " | " + resultSet.getString("phone"));
             }
-            preparedStatement.close();
             return allOfTheCustomers;
 
         } catch (SQLException e) {

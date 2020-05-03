@@ -24,6 +24,10 @@ public class City {
         this.countryName = countryName;
     }
 
+    public City(String city) {
+        this.city = city;
+    }
+
     public int getCityId() {
         return cityId;
     }
@@ -46,5 +50,10 @@ public class City {
 
     public void setCountryName(int countryName) {
         this.countryName = countryName;
+    }
+
+    @Override
+    public String toString(){
+        return city;
     }
 }
