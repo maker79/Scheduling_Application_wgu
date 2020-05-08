@@ -77,6 +77,7 @@ public class AppointmentsController implements Initializable {
 
     @FXML
     private void handleClearCustomerTable(ActionEvent actionEvent) {
+        customersTbl.getSelectionModel().clearSelection();
     }
 
     // Appointments side of the screen
@@ -92,16 +93,12 @@ public class AppointmentsController implements Initializable {
     @FXML
     private void onActionAllBtnSelected(ActionEvent actionEvent) {
 
-        if(allAppointmentsBtn.isSelected()){
-            appointmentsTbl.setItems(getAllAppointments());
+            appointmentsTbl.setItems(DatabaseQuery.getAllAppointments());
             appCustomerTblColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
             appTitleTblColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
             appTypeTblColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
             appStartTblColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
             appEndTblColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
-
-        }
-
 
     }
 
@@ -143,7 +140,7 @@ public class AppointmentsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        customersTbl.setItems(CustomersController.getAllCustomers());
+        customersTbl.setItems(DatabaseQuery.getAllCustomers());
         customerIdTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         customerNameTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         customerPhoneNumTblColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
@@ -151,36 +148,4 @@ public class AppointmentsController implements Initializable {
 
     }
 
-    /*
-    These methods will handle queries
-     */
-
-    public static ObservableList<Appointment> getAllAppointments(){
-
-        ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
-        try{
-            Connection connection = DatabaseConnectionManager.getConnection();
-            String sqlQuery = "SELECT appointment.appointmentId, appointment.title, appointment.type, appointment.start, appointment.end, customer.name " +
-                    "FROM appointment INNER JOIN customer ON appointment.customerId=customer.customerId";
-            DatabaseQuery.setPreparedStatement(connection, sqlQuery);
-            PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
-            preparedStatement.execute();
-
-            ResultSet resultSet = preparedStatement.getResultSet();
-            while (resultSet.next()){
-                Appointment appointment = new Appointment(
-                        resultSet.getString("title"),
-                        resultSet.getString("type"),
-                        resultSet.getTimestamp("start").toLocalDateTime(),
-                        LocalDateTime.parse(resultSet.getString("end")),
-                        resultSet.getString("name")
-                );
-                allAppointments.add(appointment);
-            }
-        }
-        catch (SQLException e){
-            System.out.println(e.getMessage());
-        }
-        return allAppointments;
-    }
 }

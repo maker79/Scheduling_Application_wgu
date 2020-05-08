@@ -97,44 +97,11 @@ public class CustomersController implements Initializable {
 
     }
 
-    // This method will get all the customers that are in our database
-    public static ObservableList<Customer> getAllCustomers() {
-
-        ObservableList<Customer> allOfTheCustomers = FXCollections.observableArrayList();
-
-        try {
-            Connection connection = DatabaseConnectionManager.getConnection();
-            String sqlQuery = "SELECT customer.customerId, customer.customerName, address.address, address.phone" +
-                    " FROM customer INNER JOIN address ON customer.addressId = address.addressId";
-            DatabaseQuery.setPreparedStatement(connection, sqlQuery);
-            PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
-            preparedStatement.execute();
-            ResultSet resultSet = preparedStatement.getResultSet();
-
-            while (resultSet.next()) {
-                // getting data from result set
-                Customer customer = new Customer(
-                        resultSet.getInt("customerId"),
-                        resultSet.getString("customerName"),
-                        resultSet.getString("address"),
-                        resultSet.getString("phone")
-                );
-                allOfTheCustomers.add(customer);
-
-            }
-            return allOfTheCustomers;
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         // Customers table
-        customersTbl.setItems(getAllCustomers());
+        customersTbl.setItems(DatabaseQuery.getAllCustomers());
         customerIdTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         nameTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         addressTblColumn.setCellValueFactory(new PropertyValueFactory<>("address"));

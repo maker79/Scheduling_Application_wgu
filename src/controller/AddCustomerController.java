@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.City;
+import model.Customer;
 import utils.DatabaseConnectionManager;
 import utils.DatabaseQuery;
 
@@ -78,6 +79,21 @@ public class AddCustomerController implements Initializable {
 
         String customerName = nameTxt.getText();
         String address = addressTxt.getText();
+        String city = String.valueOf(cityComboBox.getSelectionModel().getSelectedItem());
+        if(city == "Ney York".toLowerCase() || city == "Los Angels".toLowerCase() || city == "Phoenix".toLowerCase()){
+            countryTxt.setText("USA");
+        } else if(city == "Toronto".toLowerCase() || city == "Vancouver".toLowerCase()){
+            countryTxt.setText("Canada");
+        } else if(city == "Oslo".toLowerCase()){
+            countryTxt.setText("Norway");
+        } else
+            countryTxt.setText("UK");
+        String country = countryTxt.getText();
+        String zipCode = zipCodeTxt.getText();
+        String phone = phoneNumberTxt.getText();
+
+        Customer newCustomer = new Customer(customerName, address, city, country, zipCode, phone);
+
     }
 
     @FXML
@@ -114,5 +130,8 @@ public class AddCustomerController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         cityComboBox.setItems(getAllCities());
+        cityComboBox.setPromptText("Choose city");
+        countryTxt.setDisable(true);
+        countryTxt.setText("auto-populated");
     }
 }
