@@ -75,29 +75,32 @@ public class AddCustomerController implements Initializable {
     }
 
     @FXML
-    void onActionSaveAddCustomer(ActionEvent event) {
+    private void onActionSetCountry(ActionEvent actionEvent) {
 
-        String customerName = nameTxt.getText();
-        String address = addressTxt.getText();
-        String city = String.valueOf(cityComboBox.getSelectionModel().getSelectedItem());
-        if(city == "Ney York".toLowerCase() || city == "Los Angels".toLowerCase() || city == "Phoenix".toLowerCase()){
+        String currentCity = cityComboBox.getSelectionModel().getSelectedItem().toString();
+        if (currentCity.equals("New York") || currentCity.equals("Los Angeles") || currentCity.equals("Phoenix")) {
             countryTxt.setText("USA");
-        } else if(city == "Toronto".toLowerCase() || city == "Vancouver".toLowerCase()){
+        } else if (currentCity.equals("Toronto") || currentCity.equals("Vancouver")) {
             countryTxt.setText("Canada");
-        } else if(city == "Oslo".toLowerCase()){
+        } else if (currentCity.equals("Oslo")) {
             countryTxt.setText("Norway");
-        } else
+        } else {
             countryTxt.setText("UK");
-        String country = countryTxt.getText();
-        String zipCode = zipCodeTxt.getText();
-        String phone = phoneNumberTxt.getText();
-
-        Customer newCustomer = new Customer(customerName, address, city, country, zipCode, phone);
-
+        }
     }
 
     @FXML
-    private void onActionSetCity(ActionEvent actionEvent) {
+    void onActionSaveAddCustomer(ActionEvent event) {
+
+            // This will get input from a user
+            String customerName = nameTxt.getText();
+            String address = addressTxt.getText();
+            int city = cityComboBox.getSelectionModel().getSelectedIndex() + 1;
+            String country = countryTxt.getText();
+            String zipCode = zipCodeTxt.getText();
+            String phone = phoneNumberTxt.getText();
+
+            DatabaseQuery.addCustomerToDatabase(customerName, address, city, country, zipCode, phone);
 
     }
 

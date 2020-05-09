@@ -92,5 +92,48 @@ public class DatabaseQuery {
         return null;
     }
 
+    // This method will save a new customer to the database
+    public static boolean addCustomerToDatabase(String customerName, String address, int cityId, String country, String zipCode, String phone){
+        int addressId = 0;
+        int customerId = 0;
+
+        try {
+            Connection connection = DatabaseConnectionManager.getConnection();
+            String selectAddressId = "SELECT MAX(addressId) FROM address";
+            DatabaseQuery.setPreparedStatement(connection, selectAddressId);
+            PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
+            ResultSet addressResultSet = preparedStatement.executeQuery();
+            if(addressResultSet.next()){
+                addressId = addressResultSet.getInt(1);
+                addressId++;
+            }
+
+            String selectCustomerId = "SELECT MAX(customerId) FROM customer";
+            DatabaseQuery.setPreparedStatement(connection, selectCustomerId);
+            PreparedStatement preparedStatement1 = DatabaseQuery.getPreparedStatement();
+            ResultSet customerResultSet = preparedStatement.executeQuery();
+            if(customerResultSet.next()){
+                customerId = customerResultSet.getInt(1);
+                customerId++;
+            }
+
+            String addAddress = "INSERT INTO address SET addressId = ?, address = ?, address2 = 'none', cityId = ?, " +
+                    "postalCode = ?, phone = ?, createDate = NOW(), createdBy = '', lastUpdate = NOW(), lastUpdateBy = ''";
+            int addressTableUpdate = preparedStatement.executeUpdate(addAddress);
+            if(addressTableUpdate == 1){
+                String addCustomer = "INSERT INTO customer SET customerId = ?, customerName = ?, addressId = ?, active = 1," +
+                        "createDate = NOW(), createdBy = '', lastUpdate = NOW(), lastUpdateBy = ''";
+            int customerTableUpdate = preparedStatement.executeUpdate(addCustomer);
+            if(customerTableUpdate == 1){
+                return true;
+            }
+            }
+        }
+        catch (SQLException e){
+            System.out.println("Unable to save customer" + e.getMessage());
+        }
+        return false;
+    }
+
 
 }
