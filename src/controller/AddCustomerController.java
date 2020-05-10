@@ -73,7 +73,9 @@ public class AddCustomerController implements Initializable {
         stage.setScene(new Scene(scene));
         stage.show();
     }
-
+    /*
+    // This method will set Country name depending on which city has been chosen form cityComboBox
+    */
     @FXML
     private void onActionSetCountry(ActionEvent actionEvent) {
 
@@ -95,7 +97,7 @@ public class AddCustomerController implements Initializable {
             // This will get input from a user
             String customerName = nameTxt.getText();
             String address = addressTxt.getText();
-            int city = cityComboBox.getSelectionModel().getSelectedIndex() + 1;
+            int city = cityComboBox.getSelectionModel().getSelectedIndex();
             String country = countryTxt.getText();
             String zipCode = zipCodeTxt.getText();
             String phone = phoneNumberTxt.getText();
@@ -104,35 +106,10 @@ public class AddCustomerController implements Initializable {
 
     }
 
-    // This method will get all the cities from database
-    public ObservableList<City> getAllCities(){
-        ObservableList<City> allCities = FXCollections.observableArrayList();
-
-        try {
-            Connection connection = DatabaseConnectionManager.getConnection();
-            String sqlQuery = "SELECT city FROM city";
-            DatabaseQuery.setPreparedStatement(connection, sqlQuery);
-            PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
-            preparedStatement.execute();
-            ResultSet resultSet = preparedStatement.getResultSet();
-
-            while (resultSet.next()) {
-                // getting data from result set
-                City city = new City(resultSet.getString("city"));
-                allCities.add(city);
-            }
-            return allCities;
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        cityComboBox.setItems(getAllCities());
+        cityComboBox.setItems(DatabaseQuery.getAllCities());
         cityComboBox.setPromptText("Choose city");
         countryTxt.setDisable(true);
         countryTxt.setText("auto-populated");

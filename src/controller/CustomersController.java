@@ -8,10 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.stage.Stage;
@@ -27,6 +24,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class CustomersController implements Initializable {
@@ -49,6 +47,8 @@ public class CustomersController implements Initializable {
     @FXML
     private TableColumn<Address, String> phoneNumberTblColumn;
 
+    private Customer selectedCustomer;
+
     @FXML
     void handleAddCustomer(ActionEvent event) throws IOException {
 
@@ -60,20 +60,22 @@ public class CustomersController implements Initializable {
 
     // This method will delete a customer from the database
     @FXML
-    void handleDeleteCustomer(ActionEvent event) {
-        int selectedItem = customersTbl.getSelectionModel().getSelectedIndex();
-        try {
-            Connection connection = DatabaseConnectionManager.getConnection();
-            String deleteStatement = "DELETE FROM customer WHERE customerId = ?";
-            DatabaseQuery.setPreparedStatement(connection, deleteStatement);
-            PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
-            preparedStatement.setString(1, String.valueOf(selectedItem));
-            preparedStatement.execute();
-        }
-        catch (SQLException e){
-            System.out.println(e.getMessage());
-        }
+    void handleDeleteCustomer(ActionEvent event) throws SQLException {
 
+        selectedCustomer = customersTbl.getSelectionModel().getSelectedItem();
+        if(selectedCustomer != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setContentText("Please confirm that you want to delete selected customer!");
+            Optional<ButtonType> response = alert.showAndWait();
+            if (response.get() == ButtonType.OK) {
+                DatabaseQuery.deleteCustomerFromDatabase(selectedCustomer.getCustomerId(), selectedCustomer.getAddress());
+                customersTbl.setItems(DatabaseQuery.getAllCustomers());
+            }
+        } else{
+            Alert alert1 = new Alert(Alert.AlertType.WARNING);
+            alert1.setContentText("Please select a customer from the list!");
+            alert1.showAndWait();
+        }
 
     }
 
