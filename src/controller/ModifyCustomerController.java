@@ -10,8 +10,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Customer;
+import utils.DatabaseQuery;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class ModifyCustomerController {
 
@@ -65,9 +69,13 @@ public class ModifyCustomerController {
     @FXML
     private TextField countryTxt;
     @FXML
-    private ComboBox cityChoiceBox;
+    private ComboBox cityComboBox;
     @FXML
     private Label addCustomerLbl;
+
+    private Customer selectedCustomer;
+
+    private int id;
 
     @FXML
     void onActionCancelModifyCustomer(ActionEvent event) throws IOException {
@@ -80,11 +88,48 @@ public class ModifyCustomerController {
     }
 
     @FXML
-    void onActionSaveModifyCustomer(ActionEvent event) {
+    void onActionSaveModifyCustomer(ActionEvent event) throws SQLException {
 
+        // This will get input from a user
+        String customerName = nameTxt.getText();
+        String address = addressTxt.getText();
+        int city = cityComboBox.getSelectionModel().getSelectedIndex();
+        String country = countryTxt.getText();
+        String zipCode = zipCodeTxt.getText();
+        String phone = phoneNumberTxt.getText();
+
+        DatabaseQuery.modifyExistingCustomer(id, customerName, address, city, country, zipCode, phone);
     }
 
     @FXML
-    private void onActionSetCity(ActionEvent actionEvent) {
+    private void onActionSetCountry(ActionEvent actionEvent) {
+
+        String currentCity = cityComboBox.getSelectionModel().getSelectedItem().toString();
+        if (currentCity.equals("New York") || currentCity.equals("Los Angeles") || currentCity.equals("Phoenix")) {
+            countryTxt.setText("USA");
+        } else if (currentCity.equals("Toronto") || currentCity.equals("Vancouver")) {
+            countryTxt.setText("Canada");
+        } else if (currentCity.equals("Oslo")) {
+            countryTxt.setText("Norway");
+        } else {
+            countryTxt.setText("UK");
+        }
+    }
+
+    /*
+    The fallowing method accepts a customer from the customer table to initialize a view
+    in modify customer screen
+     */
+    public void showCustomerToModify(Customer customer){
+        selectedCustomer = customer;
+        nameTxt.setText(selectedCustomer.getCustomerName());
+        addressTxt.setText(selectedCustomer.getAddress());
+        cityComboBox.setItems(DatabaseQuery.getAllCities());
+        cityComboBox.setValue(selectedCustomer.getCity());
+        countryTxt.setText(selectedCustomer.getCountry());
+        countryTxt.setDisable(true);
+        zipCodeTxt.setText(selectedCustomer.getPostalCode());
+        phoneNumberTxt.setText(selectedCustomer.getPhone());
+
     }
 }

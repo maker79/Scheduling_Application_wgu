@@ -1,6 +1,5 @@
 package utils;
 
-import com.mysql.cj.xdevapi.SqlStatement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
@@ -127,24 +126,15 @@ public class DatabaseQuery {
     /*
     This method will delete a customer from the database
      */
-    public static boolean deleteCustomerFromDatabase(int customerId, String address) throws SQLException {
+    public static void deleteCustomerFromDatabase(Customer customer) throws SQLException {
 
         Connection connection = DatabaseConnectionManager.getConnection();
-        String deleteFromAddress = "DELETE FROM address WHERE address=" + "'"+address+"'";
-        DatabaseQuery.setPreparedStatement(connection, deleteFromAddress);
+        String deleteCustomer = "DELETE customer.*, address.* from customer, address WHERE " +
+                "customer.customerId = ? AND customer.addressId = address.addressId";
+        DatabaseQuery.setPreparedStatement(connection, deleteCustomer);
         PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
+        preparedStatement.setInt(1, customer.getCustomerId());
         preparedStatement.execute();
-        int addressUpdate = preparedStatement.getUpdateCount();
-        if(addressUpdate == 1){
-            String deleteFromCustomer = "DELETE FROM customer WHERE customerId=" + customerId;
-            DatabaseQuery.setPreparedStatement(connection, deleteFromCustomer);
-            PreparedStatement preparedStatement1 = DatabaseQuery.getPreparedStatement();
-            preparedStatement1.execute();
-            int customerUpdate = preparedStatement1.getUpdateCount();
-            if(customerUpdate == 1)
-                return true;
-        }
-        return false;
     }
 
     /*
@@ -206,6 +196,41 @@ public class DatabaseQuery {
         }
         catch (SQLException e){
             System.out.println("Unable to save customer: " + e.getMessage());
+        }
+        return false;
+    }
+
+    /*
+    This method will update or modify an existing customer
+     */
+    public static boolean modifyExistingCustomer(int id, String customerName, String address, int cityId, String country, String zipCode, String phone) throws SQLException {
+
+        Connection connection = DatabaseConnectionManager.getConnection();
+        String modifyAddress = "UPDATE address SET address=?, cityId=?, postalCode=?, phone=?, " +
+                "lastUpdate=CURRENT_TIMESTAMP WHERE addressId=?";
+        DatabaseQuery.setPreparedStatement(connection, modifyAddress);
+        PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
+        preparedStatement.setString(1, address);
+        preparedStatement.setInt(2, cityId);
+        preparedStatement.setString(3, zipCode);
+        preparedStatement.setString(4, phone);
+        preparedStatement.setInt(5, id);
+        preparedStatement.execute();
+
+        int addressTableUpdate = preparedStatement.getUpdateCount();
+        if(addressTableUpdate == 1){
+            String updateCustomer = "UPDATE customer set customerName=?, addressId=?, lastUpdate=CURRENT_TIMESTAMP " +
+                    "WHERE customerId=?";
+            DatabaseQuery.setPreparedStatement(connection, updateCustomer);
+            PreparedStatement preparedStatement1 = DatabaseQuery.getPreparedStatement();
+            preparedStatement1.setString(1, customerName);
+            preparedStatement1.setInt(2, id);
+            preparedStatement1.setInt(3, id);
+            preparedStatement1.execute();
+
+            int customerTableUpdate = preparedStatement1.getUpdateCount();
+            if(customerTableUpdate == 1)
+                return true;
         }
         return false;
     }

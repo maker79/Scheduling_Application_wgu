@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -48,6 +49,7 @@ public class CustomersController implements Initializable {
     private TableColumn<Address, String> phoneNumberTblColumn;
 
     private Customer selectedCustomer;
+    private static int indexOfSelectedCustomer;
 
     @FXML
     void handleAddCustomer(ActionEvent event) throws IOException {
@@ -62,13 +64,13 @@ public class CustomersController implements Initializable {
     @FXML
     void handleDeleteCustomer(ActionEvent event) throws SQLException {
 
-        selectedCustomer = customersTbl.getSelectionModel().getSelectedItem();
+        Customer selectedCustomer = customersTbl.getSelectionModel().getSelectedItem();
         if(selectedCustomer != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setContentText("Please confirm that you want to delete selected customer!");
             Optional<ButtonType> response = alert.showAndWait();
             if (response.get() == ButtonType.OK) {
-                DatabaseQuery.deleteCustomerFromDatabase(selectedCustomer.getCustomerId(), selectedCustomer.getAddress());
+                DatabaseQuery.deleteCustomerFromDatabase(selectedCustomer);
                 customersTbl.setItems(DatabaseQuery.getAllCustomers());
             }
         } else{
@@ -92,10 +94,27 @@ public class CustomersController implements Initializable {
     @FXML
     void handleModifyCustomer(ActionEvent event) throws IOException {
 
-        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/ModifyCustomer.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
+        selectedCustomer = customersTbl.getSelectionModel().getSelectedItem();
+        indexOfSelectedCustomer = DatabaseQuery.getAllCustomers().indexOf(selectedCustomer);
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/view/ModifyCustomer.fxml"));
+            Parent modifyCustomerStage = loader.load();
+            Scene modifyCustomerScene = new Scene(modifyCustomerStage);
+            // Access the modify customer controller and call a method
+            ModifyCustomerController controller = loader.getController();
+            controller.showCustomerToModify(customersTbl.getSelectionModel().getSelectedItem());
+
+            Stage applicationStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            applicationStage.setScene(modifyCustomerScene);
+            applicationStage.show();
+
+        } catch (NullPointerException e){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Please select a customer to modify!");
+            alert.showAndWait();
+        }
+
 
     }
 

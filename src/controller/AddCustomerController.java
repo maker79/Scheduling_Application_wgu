@@ -8,10 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.City;
 import model.Customer;
@@ -24,6 +21,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AddCustomerController implements Initializable {
@@ -92,7 +90,7 @@ public class AddCustomerController implements Initializable {
     }
 
     @FXML
-    void onActionSaveAddCustomer(ActionEvent event) {
+    void onActionSaveAddCustomer(ActionEvent event) throws IOException {
 
             // This will get input from a user
             String customerName = nameTxt.getText();
@@ -103,6 +101,17 @@ public class AddCustomerController implements Initializable {
             String phone = phoneNumberTxt.getText();
 
             DatabaseQuery.addCustomerToDatabase(customerName, address, city, country, zipCode, phone);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("Please confirm that you want to add customer to database!");
+        Optional<ButtonType> choice = alert.showAndWait();
+
+        if (choice.get() == ButtonType.OK) {
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }
 
     }
 
