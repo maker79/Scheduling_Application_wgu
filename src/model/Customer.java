@@ -11,6 +11,8 @@ public class Customer {
     private String postalCode;
     private String phone;
 
+
+
     public Customer(int customerId, String customerName, String address, String address2, String city, String country, String postalCode, String phone) {
         this.customerId = customerId;
         this.customerName = customerName;
@@ -29,13 +31,17 @@ public class Customer {
         this.phone = phone;
     }
 
-    public Customer(String customerName, String address, String city, String country, String zipCode, String phone) {
+    public Customer(int customerId, String customerName, String address, String city, String zipCode, String phone) {
+        this.customerId = customerId;
         this.customerName = customerName;
         this.address = address;
         this.city = city;
-        this.country = country;
         this.postalCode = zipCode;
         this.phone = phone;
+    }
+
+    public Customer() {
+
     }
 
     public int getCustomerId() {
@@ -102,4 +108,8 @@ public class Customer {
         this.phone = phone;
     }
 
+    @Override
+    public String toString() {
+        return customerName;
+    }
 }

@@ -7,6 +7,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.Customer;
+import utils.DatabaseQuery;
 
 import java.io.IOException;
 
@@ -34,6 +36,9 @@ public class AddAppointmentController {
     @FXML
     private ComboBox endComboBox;
 
+    private Customer selectedCustomer;
+    private int id;
+
     @FXML
     void handleCancelAddingAppointment(ActionEvent event) throws IOException {
 
@@ -48,4 +53,16 @@ public class AddAppointmentController {
     void handleSaveAddedAppointment(ActionEvent event) {
 
     }
+
+    /*
+    The fallowing method accepts a customer from the customer table to initialize a view
+    in add appointment screen to add appointment if an existing customer is selected
+     */
+    public void showSelectedCustomer(Customer customer){
+        selectedCustomer = customer;
+        id = customer.getCustomerId();
+        customerComboBox.setValue(customer.getCustomerName());
+        customerComboBox.setItems(DatabaseQuery.getAllCustomers());
+    }
+
 }

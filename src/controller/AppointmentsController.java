@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -44,7 +45,7 @@ public class AppointmentsController implements Initializable {
     @FXML
     private TableView<Appointment> appointmentsTbl;
     @FXML
-    private TableColumn<Customer, String> appCustomerTblColumn;
+    private TableColumn<Appointment, String> appCustomerTblColumn;
     @FXML
     private TableColumn<Appointment, String> appTitleTblColumn;
     @FXML
@@ -72,6 +73,8 @@ public class AppointmentsController implements Initializable {
     @FXML
     private Button clearBtn;
 
+    private Customer selectedCustomer;
+    private static int indexOfSelectedCustomer;
 
     // Customer side of the screen
 
@@ -92,23 +95,33 @@ public class AppointmentsController implements Initializable {
 
     @FXML
     private void onActionAllBtnSelected(ActionEvent actionEvent) {
-
-            appointmentsTbl.setItems(DatabaseQuery.getAllAppointments());
-            appCustomerTblColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-            appTitleTblColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-            appTypeTblColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-            appStartTblColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
-            appEndTblColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
-
     }
 
     @FXML
     void handleAddNewAppointment(ActionEvent event) throws IOException {
 
-        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/AddAppointment.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
+        selectedCustomer = customersTbl.getSelectionModel().getSelectedItem();
+        indexOfSelectedCustomer = DatabaseQuery.getAllCustomers().indexOf(selectedCustomer);
+        if(selectedCustomer == null){
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("/view/AddAppointment.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
+        } else {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/view/AddAppointment.fxml"));
+            Parent addAppointmentStage = loader.load();
+            Scene addAppointmentScene = new Scene(addAppointmentStage);
+            // Access the modify customer controller and call a method
+            AddAppointmentController controller = loader.getController();
+            controller.showSelectedCustomer(customersTbl.getSelectionModel().getSelectedItem());
+
+            Stage applicationStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            applicationStage.setScene(addAppointmentScene);
+            applicationStage.show();
+
+        }
+
 
     }
 
@@ -137,6 +150,12 @@ public class AppointmentsController implements Initializable {
 
     }
 
+    /*
+    This method will get values to populate appointment table
+     */
+    public void populateFieldsForAppointmentTable(Customer customer, Appointment appointment){
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -144,6 +163,13 @@ public class AppointmentsController implements Initializable {
         customerIdTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         customerNameTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         customerPhoneNumTblColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+
+        appointmentsTbl.setItems(DatabaseQuery.getAllAppointments());
+        appCustomerTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        appTitleTblColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        appTypeTblColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        appStartTblColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
+        appEndTblColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
 
 
     }

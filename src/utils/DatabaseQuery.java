@@ -55,6 +55,48 @@ public class DatabaseQuery {
         return null;
     }
     /*
+    ************************ Appointments query methods ***************************
+     */
+    /*
+    This method will add a new appointment to the database
+     */
+    void addNewAppointment(){
+
+    }
+
+    /*
+    This method will modify an existing appointment
+     */
+    void modifyExistingAppointment(){
+
+    }
+
+    /*
+    This method will delete appointment from the database
+     */
+    void deleteAppointment(int id){
+        try{
+            Connection connection = DatabaseConnectionManager.getConnection();
+            String deleteAppointment = "DELETE FROM appointment WHERE appointmentId=?";
+            DatabaseQuery.setPreparedStatement(connection, deleteAppointment);
+            PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /*
+    This method will get appointment for the current month
+     */
+
+    /*
+    This method will get appointments for the current week
+     */
+
+    /*
     **This method will get all appointments that are in the database
      */
     public static ObservableList<Appointment> getAllAppointments(){
@@ -62,7 +104,7 @@ public class DatabaseQuery {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
         try{
             Connection connection = DatabaseConnectionManager.getConnection();
-            String sqlQuery = "SELECT appointment.appointmentId, appointment.title, appointment.type, appointment.start, appointment.end, customer.customerName " +
+            String sqlQuery = "SELECT appointment.title, appointment.type, appointment.start, appointment.end, customer.customerName " +
                     "FROM appointment INNER JOIN customer ON appointment.customerId=customer.customerId";
             DatabaseQuery.setPreparedStatement(connection, sqlQuery);
             PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
@@ -78,12 +120,35 @@ public class DatabaseQuery {
                         resultSet.getString("customerName")
                 );
                 allAppointments.add(appointment);
-                System.out.println(allAppointments);
-                return allAppointments;
+//                System.out.println("All appointments: " + allAppointments);
             }
+            return allAppointments;
         }
         catch (SQLException e){
             System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    /*
+    This method will return a Customer from a database
+     */
+    public static Customer getCustomer(int id){
+        try {
+        Connection connection = DatabaseConnectionManager.getConnection();
+        String getCustomerQuery = "SELECT * FROM customer WHERE customerId=?";
+        DatabaseQuery.setPreparedStatement(connection, getCustomerQuery);
+        PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
+        preparedStatement.setInt(1, id);
+        preparedStatement.execute();
+        ResultSet resultSet = preparedStatement.getResultSet();
+        while (resultSet.next()){
+            Customer customer = new Customer();
+            customer.setCustomerName(resultSet.getString("customerName"));
+            return customer;
+        }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -140,7 +205,7 @@ public class DatabaseQuery {
     /*
     *This method will save a new customer to the database
      */
-    public static boolean addCustomerToDatabase(String customerName, String address, int cityId, String country, String zipCode, String phone){
+    public static boolean addCustomerToDatabase(String customerName, String address, int cityId, String zipCode, String phone){
         int addressId = 0;
         int customerId = 0;
 
@@ -203,7 +268,7 @@ public class DatabaseQuery {
     /*
     This method will update or modify an existing customer
      */
-    public static boolean modifyExistingCustomer(int id, String customerName, String address, int cityId, String country, String zipCode, String phone) throws SQLException {
+    public static boolean modifyExistingCustomer(int id, String customerName, String address, int cityId, String zipCode, String phone) throws SQLException {
 
         Connection connection = DatabaseConnectionManager.getConnection();
         String modifyAddress = "UPDATE address SET address=?, cityId=?, postalCode=?, phone=?, " +

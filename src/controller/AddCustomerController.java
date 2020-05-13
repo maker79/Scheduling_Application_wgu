@@ -100,7 +100,7 @@ public class AddCustomerController implements Initializable {
             String zipCode = zipCodeTxt.getText();
             String phone = phoneNumberTxt.getText();
 
-            DatabaseQuery.addCustomerToDatabase(customerName, address, city, country, zipCode, phone);
+            DatabaseQuery.addCustomerToDatabase(customerName, address, city, zipCode, phone);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setContentText("Please confirm that you want to add customer to database!");

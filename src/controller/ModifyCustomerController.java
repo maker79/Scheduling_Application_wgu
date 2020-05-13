@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 import model.Customer;
 import utils.DatabaseQuery;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -88,17 +87,20 @@ public class ModifyCustomerController {
     }
 
     @FXML
-    void onActionSaveModifyCustomer(ActionEvent event) throws SQLException {
+    void onActionSaveModifyCustomer(ActionEvent event) {
+        try{
+            // This will get input from a user
+            String customerName = nameTxt.getText();
+            String address = addressTxt.getText();
+            int city = cityComboBox.getSelectionModel().getSelectedIndex();
+            String zipCode = zipCodeTxt.getText();
+            String phone = phoneNumberTxt.getText();
 
-        // This will get input from a user
-        String customerName = nameTxt.getText();
-        String address = addressTxt.getText();
-        int city = cityComboBox.getSelectionModel().getSelectedIndex();
-        String country = countryTxt.getText();
-        String zipCode = zipCodeTxt.getText();
-        String phone = phoneNumberTxt.getText();
+            DatabaseQuery.modifyExistingCustomer(id, customerName, address, city, zipCode, phone);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-        DatabaseQuery.modifyExistingCustomer(id, customerName, address, city, country, zipCode, phone);
     }
 
     @FXML
@@ -122,10 +124,11 @@ public class ModifyCustomerController {
      */
     public void showCustomerToModify(Customer customer){
         selectedCustomer = customer;
+        id = customer.getCustomerId();
         nameTxt.setText(selectedCustomer.getCustomerName());
         addressTxt.setText(selectedCustomer.getAddress());
         cityComboBox.setItems(DatabaseQuery.getAllCities());
-        cityComboBox.setValue(selectedCustomer.getCity());
+        cityComboBox.setValue(customer.getCity());
         countryTxt.setText(selectedCustomer.getCountry());
         countryTxt.setDisable(true);
         zipCodeTxt.setText(selectedCustomer.getPostalCode());
