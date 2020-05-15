@@ -5,16 +5,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Customer;
 import utils.DatabaseQuery;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class ModifyCustomerController {
 
@@ -75,6 +73,7 @@ public class ModifyCustomerController {
     private Customer selectedCustomer;
 
     private int id;
+    private int addressId;
 
     @FXML
     void onActionCancelModifyCustomer(ActionEvent event) throws IOException {
@@ -96,8 +95,19 @@ public class ModifyCustomerController {
             String zipCode = zipCodeTxt.getText();
             String phone = phoneNumberTxt.getText();
 
-            DatabaseQuery.modifyExistingCustomer(id, customerName, address, city, zipCode, phone);
-        } catch (SQLException e) {
+            DatabaseQuery.modifyExistingCustomer(id, customerName, address, city, zipCode, phone, addressId);
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setContentText("Confirm that you want to modify this customer.");
+            Optional<ButtonType> choice = alert.showAndWait();
+
+            if (choice.get() == ButtonType.OK) {
+                stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                scene = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
+                stage.setScene(new Scene(scene));
+                stage.show();
+            }
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
 
@@ -124,12 +134,13 @@ public class ModifyCustomerController {
      */
     public void showCustomerToModify(Customer customer){
         selectedCustomer = customer;
-        id = customer.getCustomerId();
+        id = customer.getCustomerId(); // also need address id here
+        addressId = customer.getAddressId();
         nameTxt.setText(selectedCustomer.getCustomerName());
         addressTxt.setText(selectedCustomer.getAddress());
         cityComboBox.setItems(DatabaseQuery.getAllCities());
-        cityComboBox.setValue(customer.getCity());
-        countryTxt.setText(selectedCustomer.getCountry());
+        // need a loop after this to match cityId
+//        countryTxt.setText(selectedCustomer.getCountry());
         countryTxt.setDisable(true);
         zipCodeTxt.setText(selectedCustomer.getPostalCode());
         phoneNumberTxt.setText(selectedCustomer.getPhone());

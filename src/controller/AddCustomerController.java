@@ -77,15 +77,19 @@ public class AddCustomerController implements Initializable {
     @FXML
     private void onActionSetCountry(ActionEvent actionEvent) {
 
-        String currentCity = cityComboBox.getSelectionModel().getSelectedItem().toString();
-        if (currentCity.equals("New York") || currentCity.equals("Los Angeles") || currentCity.equals("Phoenix")) {
-            countryTxt.setText("USA");
-        } else if (currentCity.equals("Toronto") || currentCity.equals("Vancouver")) {
-            countryTxt.setText("Canada");
-        } else if (currentCity.equals("Oslo")) {
-            countryTxt.setText("Norway");
-        } else {
-            countryTxt.setText("UK");
+//        String currentCity = cityComboBox.getSelectionModel().getSelectedItem().toString();
+//        if (currentCity.equals("New York") || currentCity.equals("Los Angeles") || currentCity.equals("Phoenix")) {
+//            countryTxt.setText("USA");
+//        } else if (currentCity.equals("Toronto") || currentCity.equals("Vancouver")) {
+//            countryTxt.setText("Canada");
+//        } else if (currentCity.equals("Oslo")) {
+//            countryTxt.setText("Norway");
+//        } else {
+//            countryTxt.setText("UK");
+//        }
+        City city = cityComboBox.getSelectionModel().getSelectedItem();
+        if(city!=null){
+            countryTxt.setText(city.getCountryName());
         }
     }
 

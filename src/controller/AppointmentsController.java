@@ -171,7 +171,6 @@ public class AppointmentsController implements Initializable {
         appStartTblColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
         appEndTblColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
 
-
     }
 
 }

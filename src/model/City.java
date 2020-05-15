@@ -4,28 +4,12 @@ public class City {
 
     private int cityId;
     private String city;
-    private int countryId; // maybe change to countryName
+    private String country;
 
-    public City() {
-    }
-
-    public City(int cityId) {
-        this.cityId = cityId;
-    }
-
-    public City(int cityId, String city) {
+    public City(int cityId, String city, String countryName) {
         this.cityId = cityId;
         this.city = city;
-    }
-
-    public City(int cityId, String city, int countryName) {
-        this.cityId = cityId;
-        this.city = city;
-        this.countryId = countryName;
-    }
-
-    public City(String city) {
-        this.city = city;
+        this.country = countryName;
     }
 
     public int getCityId() {
@@ -44,12 +28,12 @@ public class City {
         this.city = city;
     }
 
-    public int getCountryName() {
-        return countryId;
+    public String getCountryName() {
+        return country;
     }
 
-    public void setCountryName(int countryName) {
-        this.countryId = countryName;
+    public void setCountryName(String countryName) {
+        this.country = countryName;
     }
 
     @Override

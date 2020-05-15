@@ -36,7 +36,7 @@ public class DatabaseQuery {
 
         try {
             Connection connection = DatabaseConnectionManager.getConnection();
-            String sqlQuery = "SELECT city FROM city";
+            String sqlQuery = "SELECT cityId, city, country FROM city, country WHERE city.countryId=country.countryId";
             DatabaseQuery.setPreparedStatement(connection, sqlQuery);
             PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
             preparedStatement.execute();
@@ -44,7 +44,9 @@ public class DatabaseQuery {
 
             while (resultSet.next()) {
                 // getting data from result set
-                City city = new City(resultSet.getString("city"));
+                City city = new City(resultSet.getInt("cityId"),
+                        resultSet.getString("city"),
+                        resultSet.getString("country"));
                 allCities.add(city);
             }
             return allCities;
@@ -162,7 +164,8 @@ public class DatabaseQuery {
 
         try {
             Connection connection = DatabaseConnectionManager.getConnection();
-            String sqlQuery = "SELECT customer.customerId, customer.customerName, address.address, address.phone" +
+            String sqlQuery = "SELECT customer.customerId, customer.customerName, customer.addressId, address.address, address.address2, " +
+                    "address.cityId, address.postalCode, address.phone" +
                     " FROM customer INNER JOIN address ON customer.addressId = address.addressId";
             DatabaseQuery.setPreparedStatement(connection, sqlQuery);
             PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
@@ -174,7 +177,11 @@ public class DatabaseQuery {
                 Customer customer = new Customer(
                         resultSet.getInt("customerId"),
                         resultSet.getString("customerName"),
+                        resultSet.getInt("addressId"),
                         resultSet.getString("address"),
+                        resultSet.getString("address2"),
+                        resultSet.getInt("cityId"),
+                        resultSet.getString("postalCode"),
                         resultSet.getString("phone")
                 );
                 allOfTheCustomers.add(customer);
@@ -268,7 +275,7 @@ public class DatabaseQuery {
     /*
     This method will update or modify an existing customer
      */
-    public static boolean modifyExistingCustomer(int id, String customerName, String address, int cityId, String zipCode, String phone) throws SQLException {
+    public static boolean modifyExistingCustomer(int id, String customerName, String address, int cityId, String zipCode, String phone, int addressId) throws SQLException {
 
         Connection connection = DatabaseConnectionManager.getConnection();
         String modifyAddress = "UPDATE address SET address=?, cityId=?, postalCode=?, phone=?, " +
@@ -279,7 +286,7 @@ public class DatabaseQuery {
         preparedStatement.setInt(2, cityId);
         preparedStatement.setString(3, zipCode);
         preparedStatement.setString(4, phone);
-        preparedStatement.setInt(5, id);
+        preparedStatement.setInt(5, addressId); // need addressId here, not customer
         preparedStatement.execute();
 
         int addressTableUpdate = preparedStatement.getUpdateCount();
@@ -289,7 +296,7 @@ public class DatabaseQuery {
             DatabaseQuery.setPreparedStatement(connection, updateCustomer);
             PreparedStatement preparedStatement1 = DatabaseQuery.getPreparedStatement();
             preparedStatement1.setString(1, customerName);
-            preparedStatement1.setInt(2, id);
+            preparedStatement1.setInt(2, addressId); // do need addressId
             preparedStatement1.setInt(3, id);
             preparedStatement1.execute();
 
