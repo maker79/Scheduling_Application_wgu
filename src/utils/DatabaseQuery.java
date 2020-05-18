@@ -6,10 +6,8 @@ import model.Appointment;
 import model.City;
 import model.Customer;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
 
 public class DatabaseQuery {
 
@@ -62,14 +60,56 @@ public class DatabaseQuery {
     /*
     This method will add a new appointment to the database
      */
-    void addNewAppointment(){
-
+    public static void addNewAppointment(int customerId, String title, String type, LocalDateTime start, LocalDateTime end){
+        int appointmentId = 0;
+        try{
+            Connection connection = DatabaseConnectionManager.getConnection();
+            String selectAppointmentId = "SELECT MAX(appointmentId) FROM appointment";
+            DatabaseQuery.setPreparedStatement(connection, selectAppointmentId);
+            PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
+            preparedStatement.execute();
+            ResultSet appointmentResultSet = preparedStatement.getResultSet();
+            if(appointmentResultSet.next()){
+                appointmentId = appointmentResultSet.getInt(1);
+                appointmentId++;
+            }
+            String addAppointmentStatement = "INSERT INTO appointment (appointmentId, customerId, userId, title, description, location, contact, " +
+                    "type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES (?, ?, ?, ?, 'not needed', 'not needed', 'not needed', ?, " +
+                    "'not needed', ?, ?, CURRENT_TIMESTAMP, 'not needed', CURRENT_TIMESTAMP, 'not needed')";
+            DatabaseQuery.setPreparedStatement(connection, addAppointmentStatement);
+            PreparedStatement preparedStatement1 = DatabaseQuery.getPreparedStatement();
+            preparedStatement1.setInt(1, appointmentId);
+            preparedStatement1.setInt(2, customerId);
+            preparedStatement1.setInt(3, 1);
+            preparedStatement1. setString(4, title);
+            preparedStatement1.setString(5, type);
+            preparedStatement1.setTimestamp(6, Timestamp.valueOf(start));
+            preparedStatement1.setTimestamp(7, Timestamp.valueOf(end));
+            preparedStatement1.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /*
     This method will modify an existing appointment
      */
-    void modifyExistingAppointment(){
+    public static void modifyExistingAppointment(String title, String type, LocalDateTime start, LocalDateTime end, int id){
+        try {
+            Connection connection = DatabaseConnectionManager.getConnection();
+            String updateAppointment = "UPDATE appointment SET title=?, type=?, start=?, end=?, lastUpdate=CURRENT_TIMESTAMP " +
+                    "WHERE appointmentId=?";
+            DatabaseQuery.setPreparedStatement(connection, updateAppointment);
+            PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
+            preparedStatement.setString(1, title);
+            preparedStatement.setString(2, type);
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(start));
+            preparedStatement.setTimestamp(4, Timestamp.valueOf(end));
+            preparedStatement.setInt(5, id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -156,7 +196,7 @@ public class DatabaseQuery {
     }
 
     /*
-    *This method will get all the customers that are in our database
+    *This method will get all the customers that are in the database
      */
     public static ObservableList<Customer> getAllCustomers() {
 

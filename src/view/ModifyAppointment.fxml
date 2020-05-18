@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -40,11 +39,11 @@
             <Label text="Start" GridPane.rowIndex="4" />
             <Label text="End" GridPane.rowIndex="5" />
             <TextField fx:id="titleTxt" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <ChoiceBox fx:id="typeChoiceBox" prefHeight="31.0" prefWidth="216.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <DatePicker fx:id="dateDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <ComboBox fx:id="customerComboBox" prefHeight="31.0" prefWidth="214.0" GridPane.columnIndex="1" />
             <ComboBox fx:id="startComboBox" prefHeight="31.0" prefWidth="215.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <ComboBox fx:id="endComboBox" prefHeight="31.0" prefWidth="217.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <ComboBox fx:id="typeComboBox" prefHeight="31.0" prefWidth="234.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
       <Button fx:id="cancelModAppointmentBtn" layoutX="487.0" layoutY="334.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleCancelModAppointment" prefWidth="80.0" text="Cancel" />

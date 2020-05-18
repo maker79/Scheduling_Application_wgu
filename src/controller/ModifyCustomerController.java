@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.City;
 import model.Customer;
 import utils.DatabaseQuery;
 
@@ -71,7 +73,7 @@ public class ModifyCustomerController {
     private Label addCustomerLbl;
 
     private Customer selectedCustomer;
-
+    private ObservableList<City> city;
     private int id;
     private int addressId;
 
@@ -139,8 +141,11 @@ public class ModifyCustomerController {
         nameTxt.setText(selectedCustomer.getCustomerName());
         addressTxt.setText(selectedCustomer.getAddress());
         cityComboBox.setItems(DatabaseQuery.getAllCities());
+        City city = (City) cityComboBox.getSelectionModel().getSelectedItem();
         // need a loop after this to match cityId
-//        countryTxt.setText(selectedCustomer.getCountry());
+
+
+        //        countryTxt.setText(selectedCustomer.getCountry());
         countryTxt.setDisable(true);
         zipCodeTxt.setText(selectedCustomer.getPostalCode());
         phoneNumberTxt.setText(selectedCustomer.getPhone());

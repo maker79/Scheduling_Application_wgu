@@ -16,7 +16,11 @@ import utils.DatabaseQuery;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AddAppointmentController implements Initializable {
@@ -63,11 +67,31 @@ public class AddAppointmentController implements Initializable {
     }
 
     @FXML
-    void handleSaveAddedAppointment(ActionEvent event) {
+    void handleSaveAddedAppointment(ActionEvent event) throws IOException {
         // Getting input from user
-        int customer = customerComboBox.getSelectionModel().getSelectedIndex();
+        Customer customer = (Customer) customerComboBox.getSelectionModel().getSelectedItem();
         String title = titleTxt.getText();
+        String type = (String) typeComboBox.getSelectionModel().getSelectedItem();
+        LocalDate localDate = dateDatePicker.getValue();
+        LocalTime start = (LocalTime) startComboBox.getValue();
+        LocalTime end = (LocalTime) endComboBox.getValue();
+        LocalDateTime localDateTimeStart = LocalDateTime.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(),
+                start.getHour(), start.getMinute());
+        LocalDateTime localDateTimeEnd = LocalDateTime.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(),
+                end.getHour(), end.getMinute());
 
+        DatabaseQuery.addNewAppointment(customer.getCustomerId(), title, type, localDateTimeStart, localDateTimeEnd);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("Please confirm that you want to add appointment to database!");
+        Optional<ButtonType> choice = alert.showAndWait();
+
+        if (choice.get() == ButtonType.OK) {
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }
     }
 
     /*

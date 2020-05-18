@@ -75,6 +75,8 @@ public class AppointmentsController implements Initializable {
 
     private Customer selectedCustomer;
     private static int indexOfSelectedCustomer;
+    private Appointment selectedAppointment;
+    private int indexOfSelectedAppointment;
 
     // Customer side of the screen
 
@@ -143,10 +145,26 @@ public class AppointmentsController implements Initializable {
     @FXML
     void handleModifyAppointment(ActionEvent event) throws IOException {
 
-        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/ModifyAppointment.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
+        selectedAppointment = appointmentsTbl.getSelectionModel().getSelectedItem();
+        indexOfSelectedAppointment = DatabaseQuery.getAllAppointments().indexOf(selectedAppointment);
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/view/ModifyAppointment.fxml"));
+            Parent modifyAppointmentStage = loader.load();
+            Scene modifyAppointmentScene = new Scene(modifyAppointmentStage);
+            // Access the modify appointment controller and call a method
+            ModifyAppointmentController controller = loader.getController();
+            controller.showAppointmentToModify(appointmentsTbl.getSelectionModel().getSelectedItem());
+
+            Stage applicationStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            applicationStage.setScene(modifyAppointmentScene);
+            applicationStage.show();
+
+        } catch (NullPointerException e){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Please select an appointment to modify!");
+            alert.showAndWait();
+        }
 
     }
 

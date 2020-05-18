@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import utils.DatabaseConnectionManager;
 import java.sql.SQLException;
+import java.util.Locale;
 
 public class SchedulingApp extends Application {
 
@@ -23,7 +24,7 @@ public class SchedulingApp extends Application {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         // make a connection to a database
         DatabaseConnectionManager.makeConnection();
-
+//        Locale.setDefault(new Locale("sr"));
         launch(args);
 
         // closing a connection
