@@ -1,8 +1,5 @@
 package controller;
 
-import com.mysql.cj.xdevapi.SqlStatement;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,20 +10,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.util.converter.LocalDateTimeStringConverter;
 import model.Appointment;
 import model.Customer;
-import utils.DatabaseConnectionManager;
 import utils.DatabaseQuery;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AppointmentsController implements Initializable {
@@ -72,31 +63,67 @@ public class AppointmentsController implements Initializable {
     private Button backBtn;
     @FXML
     private Button clearBtn;
+    @FXML
+    private Button showCustomerBtn;
 
     private Customer selectedCustomer;
     private static int indexOfSelectedCustomer;
     private Appointment selectedAppointment;
     private int indexOfSelectedAppointment;
 
-    // Customer side of the screen
-
+    // ********** Customer side of the screen *******************
+    /*
+    This method will clear customer selection
+     */
     @FXML
     private void handleClearCustomerTable(ActionEvent actionEvent) {
         customersTbl.getSelectionModel().clearSelection();
     }
 
-    // Appointments side of the screen
+    /*
+    This method will show all the appointments for selected customer from customer table
+     */
+    @FXML
+    private void showAppointmentsForSelectedCustomer(ActionEvent actionEvent) {
+        selectedCustomer = customersTbl.getSelectionModel().getSelectedItem();
+        if(selectedCustomer != null){
+            appointmentsTbl.setItems(DatabaseQuery.allAppointmentsForSelectedCustomer(selectedCustomer.getCustomerId()));
+            appCustomerTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+            appTitleTblColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+            appTypeTblColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+            appStartTblColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
+            appEndTblColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
+        } else{
+            Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+            alert1.setContentText("Please select customer to show!");
+            alert1.showAndWait();
+        }
 
+    }
+
+    // ****************** Appointments side of the screen ************
+    /*
+    This method will show appointments for current month when current month button is selected
+     */
     @FXML
     private void onActionCurrentMonthBtnSelected(ActionEvent actionEvent) {
     }
 
+    /*
+    This method will show appointments for current week when current week button is selected
+     */
     @FXML
     private void onActionCurrentWeekBtnSelected(ActionEvent actionEvent) {
+//        selectedCustomer = customersTbl.getSelectionModel().getSelectedItem();
+//        DatabaseQuery.getAppointmentsCurrentWeek()
     }
 
+    /*
+    This method will show all of the appointments form database when all button is selected
+     */
     @FXML
     private void onActionAllBtnSelected(ActionEvent actionEvent) {
+        DatabaseQuery.getAllAppointments();
     }
 
     @FXML
@@ -130,6 +157,20 @@ public class AppointmentsController implements Initializable {
     @FXML
     void handleDeleteAppointment(ActionEvent event) {
 
+        Appointment selectedAppointment = appointmentsTbl.getSelectionModel().getSelectedItem();
+        if(selectedAppointment != null){
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setContentText("Please confirm that you want to delete selected appointment!");
+            Optional<ButtonType> response = alert.showAndWait();
+            if(response.get() == ButtonType.OK){
+                DatabaseQuery.deleteAppointment(selectedAppointment);
+                appointmentsTbl.setItems(DatabaseQuery.getAllAppointments());
+            } else{
+                Alert alert1 = new Alert(Alert.AlertType.WARNING);
+                alert1.setContentText("Please select appointment to delete!");
+                alert1.showAndWait();
+            }
+        }
     }
 
     @FXML
@@ -166,12 +207,6 @@ public class AppointmentsController implements Initializable {
             alert.showAndWait();
         }
 
-    }
-
-    /*
-    This method will get values to populate appointment table
-     */
-    public void populateFieldsForAppointmentTable(Customer customer, Appointment appointment){
     }
 
     @Override

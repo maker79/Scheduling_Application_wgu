@@ -7,6 +7,7 @@ import model.City;
 import model.Customer;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class DatabaseQuery {
@@ -116,13 +117,13 @@ public class DatabaseQuery {
     /*
     This method will delete appointment from the database
      */
-    void deleteAppointment(int id){
+    public static void deleteAppointment(Appointment appointment){
         try{
             Connection connection = DatabaseConnectionManager.getConnection();
             String deleteAppointment = "DELETE FROM appointment WHERE appointmentId=?";
             DatabaseQuery.setPreparedStatement(connection, deleteAppointment);
             PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, appointment.getAppointmentId());
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -133,10 +134,108 @@ public class DatabaseQuery {
     /*
     This method will get appointment for the current month
      */
+    public static ObservableList<Appointment> getAppointmentsCurrentMonth(int customerId){
+        ObservableList<Appointment> appointmentsCurrentMonth = FXCollections.observableArrayList();
+        Appointment appointment;
+        LocalDate beginning = LocalDate.now();
+        LocalDate ending = LocalDate.now().plusMonths(1);
+        try{
+            Connection connection = DatabaseConnectionManager.getConnection();
+            String currentMonthQuery = "SELECT * FROM appointment WHERE customerId=? AND start >= ? AND start <= ?";
+            DatabaseQuery.setPreparedStatement(connection, currentMonthQuery);
+            PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
+            preparedStatement.setInt(1, customerId);
+            preparedStatement.setDate(2, Date.valueOf(beginning));
+            preparedStatement.setDate(3, Date.valueOf(ending));
+            preparedStatement.execute();
 
+            ResultSet resultSet = preparedStatement.getResultSet();
+            while(resultSet.next()){
+                appointment = new Appointment(resultSet.getInt("appointmentId"),
+                        resultSet.getInt("customerId"),
+                        resultSet.getString("title"),
+                        resultSet.getString("description"),
+                        resultSet.getTimestamp("start").toLocalDateTime(),
+                        resultSet.getTimestamp("end").toLocalDateTime(),
+                        resultSet.getString("customerName")
+                );
+                appointmentsCurrentMonth.add(appointment);
+            }
+            return appointmentsCurrentMonth;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     /*
     This method will get appointments for the current week
      */
+    public static ObservableList<Appointment> getAppointmentsCurrentWeek(int customerId){
+        ObservableList<Appointment> appointmentsCurrentWeek = FXCollections.observableArrayList();
+        Appointment appointment;
+        LocalDate beginning = LocalDate.now();
+        LocalDate ending = LocalDate.now().plusWeeks(1);
+        try{
+            Connection connection = DatabaseConnectionManager.getConnection();
+            String currentWeekQuery = "SELECT * FROM appointment WHERE customerId=? AND start >= ? AND start <= ?";
+            DatabaseQuery.setPreparedStatement(connection, currentWeekQuery);
+            PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
+            preparedStatement.setInt(1, customerId);
+            preparedStatement.setDate(2, Date.valueOf(beginning));
+            preparedStatement.setDate(3, Date.valueOf(ending));
+            preparedStatement.execute();
+
+            ResultSet resultSet = preparedStatement.getResultSet();
+            while(resultSet.next()){
+                appointment = new Appointment(resultSet.getInt("appointmentId"),
+                        resultSet.getInt("customerId"),
+                        resultSet.getString("title"),
+                        resultSet.getString("description"),
+                        resultSet.getTimestamp("start").toLocalDateTime(),
+                        resultSet.getTimestamp("end").toLocalDateTime(),
+                        resultSet.getString("customerName")
+                );
+                appointmentsCurrentWeek.add(appointment);
+            }
+            return appointmentsCurrentWeek;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /*
+    This method will get all appointments for selected customer
+     */
+    public static ObservableList<Appointment> allAppointmentsForSelectedCustomer(int customerId){
+        ObservableList<Appointment> appointmentsAllForCustomer = FXCollections.observableArrayList();
+        try{
+            Connection connection = DatabaseConnectionManager.getConnection();
+            String appointmentsQuery = "SELECT * FROM appointment WHERE customerId=?";
+            DatabaseQuery.setPreparedStatement(connection, appointmentsQuery);
+            PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
+            preparedStatement.setInt(1, customerId);
+            preparedStatement.execute();
+
+            ResultSet resultSet = preparedStatement.getResultSet();
+            while(resultSet.next()){
+                Appointment appointment = new Appointment(resultSet.getInt("appointmentId"),
+                        resultSet.getInt("customerId"),
+                        resultSet.getString("title"),
+                        resultSet.getString("description"),
+                        resultSet.getTimestamp("start").toLocalDateTime(),
+                        resultSet.getTimestamp("end").toLocalDateTime()
+                );
+                appointmentsAllForCustomer.add(appointment);
+            }
+            return appointmentsAllForCustomer;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /*
     **This method will get all appointments that are in the database

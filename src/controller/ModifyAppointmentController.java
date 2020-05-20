@@ -62,6 +62,7 @@ public class ModifyAppointmentController implements Initializable {
 
     @FXML
     void handleSaveModAppointment(ActionEvent event) throws IOException {
+
         Appointment appointment = selectedAppointment;
         id = appointment.getAppointmentId();
         String title = titleTxt.getText();
