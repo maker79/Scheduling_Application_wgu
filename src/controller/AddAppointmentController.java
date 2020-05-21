@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Customer;
+import model.User;
 import utils.DatabaseQuery;
 
 import java.io.IOException;
@@ -47,6 +48,7 @@ public class AddAppointmentController implements Initializable {
     @FXML
     private ComboBox endComboBox;
 
+    private User currentUser;
     private Customer selectedCustomer;
     private int id;
     private final ObservableList<String> APPOINTMENT_TYPES = FXCollections.observableArrayList("Presentation", "Scrum", "Consultation");
@@ -80,7 +82,7 @@ public class AddAppointmentController implements Initializable {
         LocalDateTime localDateTimeEnd = LocalDateTime.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(),
                 end.getHour(), end.getMinute());
 
-        DatabaseQuery.addNewAppointment(customer.getCustomerId(), title, type, localDateTimeStart, localDateTimeEnd);
+        DatabaseQuery.addNewAppointment(customer.getCustomerId(), title, currentUser, type, localDateTimeStart, localDateTimeEnd);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setContentText("Please confirm that you want to add appointment to database!");

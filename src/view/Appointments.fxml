@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1123.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentsController">
+<AnchorPane prefHeight="600.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentsController">
    <children>
       <SplitPane dividerPositions="0.4335414808206958" layoutY="220.0" prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -33,20 +33,20 @@
                   <Button fx:id="showCustomerBtn" layoutX="236.0" layoutY="508.0" mnemonicParsing="false" onAction="#showAppointmentsForSelectedCustomer" prefHeight="31.0" prefWidth="131.0" text="Show customer" />
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="714.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="638.0">
                <children>
                   <Label layoutX="235.0" layoutY="14.0" text="Appointments">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <TableView fx:id="appointmentsTbl" layoutX="24.0" layoutY="103.0" prefHeight="392.0" prefWidth="590.0">
+                  <TableView fx:id="appointmentsTbl" layoutX="24.0" layoutY="103.0" prefHeight="392.0" prefWidth="682.0">
                     <columns>
                       <TableColumn fx:id="appCustomerTblColumn" prefWidth="118.0" text="Customer" />
                       <TableColumn fx:id="appTitleTblColumn" prefWidth="118.0" text="Title" />
                         <TableColumn fx:id="appTypeTblColumn" prefWidth="118.0" text="Type" />
-                        <TableColumn fx:id="appStartTblColumn" prefWidth="118.0" text="Start" />
-                        <TableColumn fx:id="appEndTblColumn" prefWidth="118.0" text="End" />
+                        <TableColumn fx:id="appStartTblColumn" prefWidth="165.0" text="Start" />
+                        <TableColumn fx:id="appEndTblColumn" prefWidth="162.0" text="End" />
                     </columns>
                   </TableView>
                   <RadioButton fx:id="currentMonthBtn" layoutX="24.0" layoutY="63.0" mnemonicParsing="false" onAction="#onActionCurrentMonthBtnSelected" text="For current month">
@@ -58,7 +58,7 @@
                   <Button fx:id="deleteAppointmentBtn" layoutX="534.0" layoutY="510.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleDeleteAppointment" prefWidth="80.0" text="Delete" />
                   <Button fx:id="modifyAppointmentBtn" layoutX="441.0" layoutY="510.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleModifyAppointment" prefWidth="80.0" text="Modify" />
                   <Button fx:id="addAppointmentBtn" layoutX="347.0" layoutY="510.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleAddNewAppointment" prefWidth="80.0" text="Add" />
-                  <Button fx:id="backBtn" layoutX="534.0" layoutY="553.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleGoBackToMainScreen" prefWidth="80.0" text="Back" />
+                  <Button fx:id="backBtn" layoutX="626.0" layoutY="510.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleGoBackToMainScreen" prefWidth="80.0" text="Back" />
                   <RadioButton fx:id="allAppointmentsBtn" layoutX="342.0" layoutY="63.0" mnemonicParsing="false" onAction="#onActionAllBtnSelected" selected="true" text="All" toggleGroup="$appointmentsBtns" />
                </children>
             </AnchorPane>

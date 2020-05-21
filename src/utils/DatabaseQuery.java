@@ -5,7 +5,9 @@ import javafx.collections.ObservableList;
 import model.Appointment;
 import model.City;
 import model.Customer;
+import model.User;
 
+import javax.jws.soap.SOAPBinding;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -61,8 +63,10 @@ public class DatabaseQuery {
     /*
     This method will add a new appointment to the database
      */
-    public static void addNewAppointment(int customerId, String title, String type, LocalDateTime start, LocalDateTime end){
+    public static void addNewAppointment(int customerId, String title, User currentUser, String type, LocalDateTime start, LocalDateTime end){
         int appointmentId = 0;
+        User user;
+        user = currentUser;
         try{
             Connection connection = DatabaseConnectionManager.getConnection();
             String selectAppointmentId = "SELECT MAX(appointmentId) FROM appointment";
@@ -75,17 +79,18 @@ public class DatabaseQuery {
                 appointmentId++;
             }
             String addAppointmentStatement = "INSERT INTO appointment (appointmentId, customerId, userId, title, description, location, contact, " +
-                    "type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES (?, ?, ?, ?, 'not needed', 'not needed', 'not needed', ?, " +
+                    "type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES (?, ?, ?, ?, 'not needed', 'not needed', ?, ?, " +
                     "'not needed', ?, ?, CURRENT_TIMESTAMP, 'not needed', CURRENT_TIMESTAMP, 'not needed')";
             DatabaseQuery.setPreparedStatement(connection, addAppointmentStatement);
             PreparedStatement preparedStatement1 = DatabaseQuery.getPreparedStatement();
             preparedStatement1.setInt(1, appointmentId);
             preparedStatement1.setInt(2, customerId);
-            preparedStatement1.setInt(3, 1);
+            preparedStatement1.setInt(3, currentUser.getUserId());
             preparedStatement1. setString(4, title);
-            preparedStatement1.setString(5, type);
-            preparedStatement1.setTimestamp(6, Timestamp.valueOf(start));
-            preparedStatement1.setTimestamp(7, Timestamp.valueOf(end));
+            preparedStatement1.setObject(5, currentUser.getUserName());
+            preparedStatement1.setString(6, type);
+            preparedStatement1.setTimestamp(7, Timestamp.valueOf(start));
+            preparedStatement1.setTimestamp(8, Timestamp.valueOf(end));
             preparedStatement1.execute();
         } catch (Exception e) {
             e.printStackTrace();
@@ -156,8 +161,7 @@ public class DatabaseQuery {
                         resultSet.getString("title"),
                         resultSet.getString("description"),
                         resultSet.getTimestamp("start").toLocalDateTime(),
-                        resultSet.getTimestamp("end").toLocalDateTime(),
-                        resultSet.getString("customerName")
+                        resultSet.getTimestamp("end").toLocalDateTime()
                 );
                 appointmentsCurrentMonth.add(appointment);
             }
@@ -193,8 +197,7 @@ public class DatabaseQuery {
                         resultSet.getString("title"),
                         resultSet.getString("description"),
                         resultSet.getTimestamp("start").toLocalDateTime(),
-                        resultSet.getTimestamp("end").toLocalDateTime(),
-                        resultSet.getString("customerName")
+                        resultSet.getTimestamp("end").toLocalDateTime()
                 );
                 appointmentsCurrentWeek.add(appointment);
             }
@@ -340,12 +343,19 @@ public class DatabaseQuery {
     public static void deleteCustomerFromDatabase(Customer customer) throws SQLException {
 
         Connection connection = DatabaseConnectionManager.getConnection();
-        String deleteCustomer = "DELETE customer.*, address.* from customer, address WHERE " +
-                "customer.customerId = ? AND customer.addressId = address.addressId";
-        DatabaseQuery.setPreparedStatement(connection, deleteCustomer);
+        String deleteAppointment = "DELETE FROM appointment WHERE customerId = ?";
+        DatabaseQuery.setPreparedStatement(connection, deleteAppointment);
         PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
         preparedStatement.setInt(1, customer.getCustomerId());
         preparedStatement.execute();
+        int appointmentTableUpdate = preparedStatement.getUpdateCount();
+        if(appointmentTableUpdate == 1){
+            String deleteCustomer = "DELETE FROM customer WHERE customerId = ?";
+            DatabaseQuery.setPreparedStatement(connection, deleteCustomer);
+            PreparedStatement preparedStatement1 = DatabaseQuery.getPreparedStatement();
+            preparedStatement1.setInt(1, customer.getCustomerId());
+            preparedStatement1.execute();
+        }
     }
 
     /*
@@ -445,6 +455,5 @@ public class DatabaseQuery {
         }
         return false;
     }
-
 
 }

@@ -107,6 +107,15 @@ public class AppointmentsController implements Initializable {
      */
     @FXML
     private void onActionCurrentMonthBtnSelected(ActionEvent actionEvent) {
+        selectedCustomer = customersTbl.getSelectionModel().getSelectedItem();
+        if(selectedCustomer != null){
+            appointmentsTbl.setItems(DatabaseQuery.getAppointmentsCurrentMonth(selectedCustomer.getCustomerId()));
+            appCustomerTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+            appTitleTblColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+            appTypeTblColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+            appStartTblColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
+            appEndTblColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
+        }
     }
 
     /*
@@ -114,8 +123,15 @@ public class AppointmentsController implements Initializable {
      */
     @FXML
     private void onActionCurrentWeekBtnSelected(ActionEvent actionEvent) {
-//        selectedCustomer = customersTbl.getSelectionModel().getSelectedItem();
-//        DatabaseQuery.getAppointmentsCurrentWeek()
+        selectedCustomer = customersTbl.getSelectionModel().getSelectedItem();
+        if(selectedCustomer != null){
+            appointmentsTbl.setItems(DatabaseQuery.getAppointmentsCurrentWeek(selectedCustomer.getCustomerId()));
+            appCustomerTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+            appTitleTblColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+            appTypeTblColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+            appStartTblColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
+            appEndTblColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
+        }
     }
 
     /*
@@ -123,7 +139,23 @@ public class AppointmentsController implements Initializable {
      */
     @FXML
     private void onActionAllBtnSelected(ActionEvent actionEvent) {
-        DatabaseQuery.getAllAppointments();
+        selectedCustomer = customersTbl.getSelectionModel().getSelectedItem();
+        if(selectedCustomer != null){
+            appointmentsTbl.setItems(DatabaseQuery.allAppointmentsForSelectedCustomer(selectedCustomer.getCustomerId()));
+            appCustomerTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+            appTitleTblColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+            appTypeTblColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+            appStartTblColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
+            appEndTblColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
+        } else {
+            appointmentsTbl.setItems(DatabaseQuery.getAllAppointments());
+            appCustomerTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+            appTitleTblColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+            appTypeTblColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+            appStartTblColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
+            appEndTblColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
+        }
+
     }
 
     @FXML

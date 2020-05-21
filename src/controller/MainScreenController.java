@@ -61,7 +61,12 @@ public class MainScreenController {
     }
 
     @FXML
-    void handleReportsBtn(ActionEvent event) {
+    void handleReportsBtn(ActionEvent event) throws IOException {
+
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/view/Reports.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
 
     }
 
