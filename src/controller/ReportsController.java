@@ -91,23 +91,18 @@ public class ReportsController implements Initializable {
         displayLabel.setText("Total number of customers");
         try {
             Connection connection = DatabaseConnectionManager.getConnection();
-//            String customerQuery = "SELECT customer.customerName AS 'Customer Name, appointment.type AS 'Type' " +
-//                    "FROM customer JOIN appointment ON customer.customerId = appointment.customerId " +
-//                    "ORDER BY 'Customer Name'";
-            String customerQuery = "select customer.customerName as 'Customer Name' , appointment.type as 'Type'\n" +
-                    "from customer join appointment ON customer.customerId = appointment.customerId\n" +
-                    "order by 'Customer Name'";
+            String customerQuery = "SELECT COUNT(*) as 'Total Number of Customers' from customer";
             DatabaseQuery.setPreparedStatement(connection, customerQuery);
             PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getResultSet();
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(String.format("%1$-45s %2$s \n", "Customer Name", "Type"));
-            stringBuilder.append(String.join(" ", Collections.nCopies(30, "#")));
+            stringBuilder.append(String.format("%1$s \n", "Total Number of Customers"));
+            stringBuilder.append(String.join(" ", Collections.nCopies(15, "#")));
             stringBuilder.append("\n");
             while (resultSet.next()) {
-                stringBuilder.append(String.format("%1$-45s %2$s \n",
-                        resultSet.getString("Customer Name"), resultSet.getString("Type")));
+                stringBuilder.append(String.format("%1$s \n",
+                        resultSet.getString("Total Number of Customers")));
             }
             displayTextArea.setText(stringBuilder.toString());
         } catch (SQLException e) {

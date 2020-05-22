@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.City;
 import model.Customer;
+import utils.CustomerQuery;
 import utils.DatabaseQuery;
 
 import java.io.IOException;
@@ -57,8 +58,6 @@ public class ModifyCustomerController {
     @FXML
     private TextField phoneNumberTxt;
 
-    @FXML
-    private ComboBox<?> countryChoiceBox;
 
     @FXML
     private Button cancelModifyCustomerBtn;
@@ -68,7 +67,7 @@ public class ModifyCustomerController {
     @FXML
     private TextField countryTxt;
     @FXML
-    private ComboBox cityComboBox;
+    private ComboBox<City> cityComboBox;
     @FXML
     private Label addCustomerLbl;
 
@@ -97,7 +96,7 @@ public class ModifyCustomerController {
             String zipCode = zipCodeTxt.getText();
             String phone = phoneNumberTxt.getText();
 
-            DatabaseQuery.modifyExistingCustomer(id, customerName, address, city, zipCode, phone, addressId);
+            CustomerQuery.modifyExistingCustomer(id, customerName, address, city, zipCode, phone, addressId);
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setContentText("Confirm that you want to modify this customer.");
@@ -141,8 +140,14 @@ public class ModifyCustomerController {
         nameTxt.setText(selectedCustomer.getCustomerName());
         addressTxt.setText(selectedCustomer.getAddress());
         cityComboBox.setItems(DatabaseQuery.getAllCities());
-        City city = (City) cityComboBox.getSelectionModel().getSelectedItem();
         // need a loop after this to match cityId
+        for(City c : cityComboBox.getItems()){
+            if (c.getCityId() == customer.getCityId()){
+                cityComboBox.setValue(c);
+                countryTxt.setText(c.getCountryName());
+                break;
+            }
+        }
 
 
         //        countryTxt.setText(selectedCustomer.getCountry());

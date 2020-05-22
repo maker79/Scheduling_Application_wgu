@@ -40,9 +40,9 @@ public class LoginScreenController implements Initializable {
     private Button loginBtn;
 
     ResourceBundle resourceBundle = ResourceBundle.getBundle("lang/Nat", Locale.getDefault());
+    public static User validateUser = null;
 
-
-    public static Boolean validateLoginAttempt(String username, String password) {
+    public static User validateLoginAttempt(String username, String password) {
 
         try{
             Connection connection = DatabaseConnectionManager.getConnection();
@@ -56,29 +56,28 @@ public class LoginScreenController implements Initializable {
 
             while(resultSet.next()){
                 User currentUser = new User();
+                currentUser.setUserId(resultSet.getInt("userId"));
                 currentUser.setUserName(resultSet.getString("userName"));
-                return true;
+                return currentUser;
             }
         } catch (SQLException e){
             System.out.println(e.getMessage());
         }
-
-        return false;
+        return null;
     }
 
     public void handleLogin(ActionEvent actionEvent) throws IOException {
 
         String username = userNameTxt.getText();
         String password = passwordTxt.getText();
-        boolean validateUser = validateLoginAttempt(username, password);
+        validateUser = validateLoginAttempt(username, password);
 
         if(username.isEmpty() || password.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle(resourceBundle.getString("errorTitle"));
             alert.setContentText(resourceBundle.getString("errorMessage"));
             alert.showAndWait();
-        }
-        else if (validateUser) {
+        } else if (validateUser != null) {
             stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
             stage.setScene(new Scene(scene));

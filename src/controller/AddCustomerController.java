@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.City;
 import model.Customer;
+import utils.CustomerQuery;
 import utils.DatabaseConnectionManager;
 import utils.DatabaseQuery;
 
@@ -104,7 +105,7 @@ public class AddCustomerController implements Initializable {
             String zipCode = zipCodeTxt.getText();
             String phone = phoneNumberTxt.getText();
 
-            DatabaseQuery.addCustomerToDatabase(customerName, address, city, zipCode, phone);
+            CustomerQuery.addCustomerToDatabase(customerName, address, city, zipCode, phone);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setContentText("Please confirm that you want to add customer to database!");

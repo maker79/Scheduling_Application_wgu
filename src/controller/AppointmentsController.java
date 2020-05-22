@@ -12,7 +12,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.Customer;
-import utils.DatabaseQuery;
+import utils.AppointmentQuery;
+import utils.CustomerQuery;
 
 import java.io.IOException;
 import java.net.URL;
@@ -77,7 +78,14 @@ public class AppointmentsController implements Initializable {
      */
     @FXML
     private void handleClearCustomerTable(ActionEvent actionEvent) {
+
         customersTbl.getSelectionModel().clearSelection();
+        appointmentsTbl.setItems(AppointmentQuery.getAllAppointments());
+        appCustomerTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        appTitleTblColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        appTypeTblColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        appStartTblColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
+        appEndTblColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
     }
 
     /*
@@ -85,9 +93,10 @@ public class AppointmentsController implements Initializable {
      */
     @FXML
     private void showAppointmentsForSelectedCustomer(ActionEvent actionEvent) {
+
         selectedCustomer = customersTbl.getSelectionModel().getSelectedItem();
         if(selectedCustomer != null){
-            appointmentsTbl.setItems(DatabaseQuery.allAppointmentsForSelectedCustomer(selectedCustomer.getCustomerId()));
+            appointmentsTbl.setItems(AppointmentQuery.allAppointmentsForSelectedCustomer(selectedCustomer.getCustomerId()));
             appCustomerTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
             appTitleTblColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
             appTypeTblColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
@@ -107,10 +116,18 @@ public class AppointmentsController implements Initializable {
      */
     @FXML
     private void onActionCurrentMonthBtnSelected(ActionEvent actionEvent) {
+
         selectedCustomer = customersTbl.getSelectionModel().getSelectedItem();
         if(selectedCustomer != null){
-            appointmentsTbl.setItems(DatabaseQuery.getAppointmentsCurrentMonth(selectedCustomer.getCustomerId()));
+            appointmentsTbl.setItems(AppointmentQuery.getAppointmentsCurrentMonth(selectedCustomer.getCustomerId()));
             appCustomerTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+            appTitleTblColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+            appTypeTblColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+            appStartTblColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
+            appEndTblColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
+        } else{
+            appointmentsTbl.setItems(AppointmentQuery.getAllAppointmentsForCurrentMonth());
+            appCustomerTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
             appTitleTblColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
             appTypeTblColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
             appStartTblColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
@@ -123,10 +140,18 @@ public class AppointmentsController implements Initializable {
      */
     @FXML
     private void onActionCurrentWeekBtnSelected(ActionEvent actionEvent) {
+
         selectedCustomer = customersTbl.getSelectionModel().getSelectedItem();
         if(selectedCustomer != null){
-            appointmentsTbl.setItems(DatabaseQuery.getAppointmentsCurrentWeek(selectedCustomer.getCustomerId()));
+            appointmentsTbl.setItems(AppointmentQuery.getAppointmentsCurrentWeek(selectedCustomer.getCustomerId()));
             appCustomerTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+            appTitleTblColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+            appTypeTblColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+            appStartTblColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
+            appEndTblColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
+        } else{
+            appointmentsTbl.setItems(AppointmentQuery.getAllAppointmentsForCurrentWeek());
+            appCustomerTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
             appTitleTblColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
             appTypeTblColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
             appStartTblColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
@@ -139,16 +164,17 @@ public class AppointmentsController implements Initializable {
      */
     @FXML
     private void onActionAllBtnSelected(ActionEvent actionEvent) {
+
         selectedCustomer = customersTbl.getSelectionModel().getSelectedItem();
         if(selectedCustomer != null){
-            appointmentsTbl.setItems(DatabaseQuery.allAppointmentsForSelectedCustomer(selectedCustomer.getCustomerId()));
+            appointmentsTbl.setItems(AppointmentQuery.allAppointmentsForSelectedCustomer(selectedCustomer.getCustomerId()));
             appCustomerTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
             appTitleTblColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
             appTypeTblColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
             appStartTblColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
             appEndTblColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
         } else {
-            appointmentsTbl.setItems(DatabaseQuery.getAllAppointments());
+            appointmentsTbl.setItems(AppointmentQuery.getAllAppointments());
             appCustomerTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
             appTitleTblColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
             appTypeTblColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
@@ -162,7 +188,7 @@ public class AppointmentsController implements Initializable {
     void handleAddNewAppointment(ActionEvent event) throws IOException {
 
         selectedCustomer = customersTbl.getSelectionModel().getSelectedItem();
-        indexOfSelectedCustomer = DatabaseQuery.getAllCustomers().indexOf(selectedCustomer);
+        indexOfSelectedCustomer = CustomerQuery.getAllCustomers().indexOf(selectedCustomer);
         if(selectedCustomer == null){
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/view/AddAppointment.fxml"));
@@ -195,8 +221,8 @@ public class AppointmentsController implements Initializable {
             alert.setContentText("Please confirm that you want to delete selected appointment!");
             Optional<ButtonType> response = alert.showAndWait();
             if(response.get() == ButtonType.OK){
-                DatabaseQuery.deleteAppointment(selectedAppointment);
-                appointmentsTbl.setItems(DatabaseQuery.getAllAppointments());
+                AppointmentQuery.deleteAppointment(selectedAppointment);
+                appointmentsTbl.setItems(AppointmentQuery.getAllAppointments());
             } else{
                 Alert alert1 = new Alert(Alert.AlertType.WARNING);
                 alert1.setContentText("Please select appointment to delete!");
@@ -219,7 +245,7 @@ public class AppointmentsController implements Initializable {
     void handleModifyAppointment(ActionEvent event) throws IOException {
 
         selectedAppointment = appointmentsTbl.getSelectionModel().getSelectedItem();
-        indexOfSelectedAppointment = DatabaseQuery.getAllAppointments().indexOf(selectedAppointment);
+        indexOfSelectedAppointment = AppointmentQuery.getAllAppointments().indexOf(selectedAppointment);
         try{
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/view/ModifyAppointment.fxml"));
@@ -244,12 +270,12 @@ public class AppointmentsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        customersTbl.setItems(DatabaseQuery.getAllCustomers());
+        customersTbl.setItems(CustomerQuery.getAllCustomers());
         customerIdTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         customerNameTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         customerPhoneNumTblColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
 
-        appointmentsTbl.setItems(DatabaseQuery.getAllAppointments());
+        appointmentsTbl.setItems(AppointmentQuery.getAllAppointments());
         appCustomerTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         appTitleTblColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         appTypeTblColumn.setCellValueFactory(new PropertyValueFactory<>("type"));

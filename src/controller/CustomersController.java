@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Address;
 import model.Customer;
+import utils.CustomerQuery;
 import utils.DatabaseQuery;
 
 import java.io.IOException;
@@ -62,8 +63,8 @@ public class CustomersController implements Initializable {
             alert.setContentText("Please confirm that you want to delete selected customer!");
             Optional<ButtonType> response = alert.showAndWait();
             if (response.get() == ButtonType.OK) {
-                DatabaseQuery.deleteCustomerFromDatabase(selectedCustomer);
-                customersTbl.setItems(DatabaseQuery.getAllCustomers());
+                CustomerQuery.deleteCustomerFromDatabase(selectedCustomer);
+                customersTbl.setItems(CustomerQuery.getAllCustomers());
             }
         } else{
             Alert alert1 = new Alert(Alert.AlertType.WARNING);
@@ -87,7 +88,7 @@ public class CustomersController implements Initializable {
     void handleModifyCustomer(ActionEvent event) throws IOException {
 
         selectedCustomer = customersTbl.getSelectionModel().getSelectedItem();
-        indexOfSelectedCustomer = DatabaseQuery.getAllCustomers().indexOf(selectedCustomer);
+        indexOfSelectedCustomer = CustomerQuery.getAllCustomers().indexOf(selectedCustomer);
         try{
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/view/ModifyCustomer.fxml"));
@@ -114,7 +115,7 @@ public class CustomersController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         // Customers table
-        customersTbl.setItems(DatabaseQuery.getAllCustomers());
+        customersTbl.setItems(CustomerQuery.getAllCustomers());
         customerIdTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         nameTblColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         addressTblColumn.setCellValueFactory(new PropertyValueFactory<>("address"));

@@ -12,6 +12,8 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Customer;
 import model.User;
+import utils.AppointmentQuery;
+import utils.CustomerQuery;
 import utils.DatabaseQuery;
 
 import java.io.IOException;
@@ -48,7 +50,6 @@ public class AddAppointmentController implements Initializable {
     @FXML
     private ComboBox endComboBox;
 
-    private User currentUser;
     private Customer selectedCustomer;
     private int id;
     private final ObservableList<String> APPOINTMENT_TYPES = FXCollections.observableArrayList("Presentation", "Scrum", "Consultation");
@@ -82,7 +83,7 @@ public class AddAppointmentController implements Initializable {
         LocalDateTime localDateTimeEnd = LocalDateTime.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(),
                 end.getHour(), end.getMinute());
 
-        DatabaseQuery.addNewAppointment(customer.getCustomerId(), title, currentUser, type, localDateTimeStart, localDateTimeEnd);
+        AppointmentQuery.addNewAppointment(customer.getCustomerId(), title, LoginScreenController.validateUser, type, localDateTimeStart, localDateTimeEnd);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setContentText("Please confirm that you want to add appointment to database!");
@@ -104,7 +105,7 @@ public class AddAppointmentController implements Initializable {
         selectedCustomer = customer;
         id = customer.getCustomerId();
         customerComboBox.setValue(customer.getCustomerName());
-        customerComboBox.setItems(DatabaseQuery.getAllCustomers());
+        customerComboBox.setItems(CustomerQuery.getAllCustomers());
     }
 
     @Override
@@ -119,7 +120,7 @@ public class AddAppointmentController implements Initializable {
             start = start.plusMinutes(30);
         }
 
-        customerComboBox.setItems(DatabaseQuery.getAllCustomers());
+        customerComboBox.setItems(CustomerQuery.getAllCustomers());
         customerComboBox.setPromptText("Choose customer");
         typeComboBox.setItems(APPOINTMENT_TYPES);
         startComboBox.getSelectionModel().select(LocalTime.of(8,0));

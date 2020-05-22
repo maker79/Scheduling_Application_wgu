@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.Customer;
+import utils.AppointmentQuery;
 import utils.DatabaseQuery;
 
 import java.io.IOException;
@@ -75,7 +76,7 @@ public class ModifyAppointmentController implements Initializable {
         LocalDateTime localDateTimeEnd = LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(),
                 end.getHour(), end.getMinute());
 
-        DatabaseQuery.modifyExistingAppointment(title, type, localDateTimeStart, localDateTimeEnd, id);
+        AppointmentQuery.modifyExistingAppointment(title, type, localDateTimeStart, localDateTimeEnd, id);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setContentText("Confirm that you want to modify this appointment.");
