@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import model.User;
 import utils.DatabaseConnectionManager;
 import utils.DatabaseQuery;
+import utils.FileLogger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -58,6 +59,11 @@ public class LoginScreenController implements Initializable {
                 User currentUser = new User();
                 currentUser.setUserId(resultSet.getInt("userId"));
                 currentUser.setUserName(resultSet.getString("userName"));
+//                if(validateUser == currentUser)
+//                    FileLogger.handleLog(username, true);
+//                else
+//                    FileLogger.handleLog(username, false);
+
                 return currentUser;
             }
         } catch (SQLException e){
@@ -78,11 +84,13 @@ public class LoginScreenController implements Initializable {
             alert.setContentText(resourceBundle.getString("errorMessage"));
             alert.showAndWait();
         } else if (validateUser != null) {
+            FileLogger.handleLog(username, true);
             stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
             stage.setScene(new Scene(scene));
             stage.show();
         } else {
+                FileLogger.handleLog(username, false);
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle(resourceBundle.getString("warningTitle"));
                 alert.setContentText(resourceBundle.getString("warningMessage"));
