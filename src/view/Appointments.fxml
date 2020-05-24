@@ -49,12 +49,12 @@
                         <TableColumn fx:id="appEndTblColumn" prefWidth="162.0" text="End" />
                     </columns>
                   </TableView>
-                  <RadioButton fx:id="currentMonthBtn" layoutX="24.0" layoutY="63.0" mnemonicParsing="false" onAction="#onActionCurrentMonthBtnSelected" text="For current month">
+                  <RadioButton fx:id="currentMonthBtn" layoutX="24.0" layoutY="63.0" mnemonicParsing="false" onAction="#onActionCurrentMonthBtnSelected" text="Next 30 days">
                      <toggleGroup>
                         <ToggleGroup fx:id="appointmentsBtns" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton fx:id="currentWeekBtn" layoutX="189.0" layoutY="63.0" mnemonicParsing="false" onAction="#onActionCurrentWeekBtnSelected" text="For current week" toggleGroup="$appointmentsBtns" />
+                  <RadioButton fx:id="currentWeekBtn" layoutX="189.0" layoutY="63.0" mnemonicParsing="false" onAction="#onActionCurrentWeekBtnSelected" text="Next 7 days" toggleGroup="$appointmentsBtns" />
                   <Button fx:id="deleteAppointmentBtn" layoutX="534.0" layoutY="510.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleDeleteAppointment" prefWidth="80.0" text="Delete" />
                   <Button fx:id="modifyAppointmentBtn" layoutX="441.0" layoutY="510.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleModifyAppointment" prefWidth="80.0" text="Modify" />
                   <Button fx:id="addAppointmentBtn" layoutX="347.0" layoutY="510.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleAddNewAppointment" prefWidth="80.0" text="Add" />

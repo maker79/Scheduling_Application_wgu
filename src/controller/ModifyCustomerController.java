@@ -24,44 +24,30 @@ public class ModifyCustomerController {
 
     @FXML
     private Label modifyCustomerLbl;
-
     @FXML
     private Label nameLbl;
-
     @FXML
     private Label countryLbl;
-
     @FXML
     private Label cityLbl;
-
     @FXML
     private Label addressLbl;
-
     @FXML
     private Label zipCodeLbl;
-
     @FXML
     private Label phoneNumberLbl;
-
-    @FXML
-    private TextField nameTxt;
-
     @FXML
     private TextField cityTxt;
-
     @FXML
     private TextField addressTxt;
-
     @FXML
     private TextField zipCodeTxt;
-
     @FXML
     private TextField phoneNumberTxt;
-
-
+    @FXML
+    private Label nameLabel;
     @FXML
     private Button cancelModifyCustomerBtn;
-
     @FXML
     private Button saveModifyCustomerBtn;
     @FXML
@@ -90,9 +76,9 @@ public class ModifyCustomerController {
     void onActionSaveModifyCustomer(ActionEvent event) {
         try{
             // This will get input from a user
-            String customerName = nameTxt.getText();
+            String customerName = nameLabel.getText();
             String address = addressTxt.getText();
-            int city = cityComboBox.getSelectionModel().getSelectedIndex();
+            int city = cityComboBox.getSelectionModel().getSelectedItem().getCityId();
             String zipCode = zipCodeTxt.getText();
             String phone = phoneNumberTxt.getText();
 
@@ -137,7 +123,7 @@ public class ModifyCustomerController {
         selectedCustomer = customer;
         id = customer.getCustomerId(); // also need address id here
         addressId = customer.getAddressId();
-        nameTxt.setText(selectedCustomer.getCustomerName());
+        nameLabel.setText(selectedCustomer.getCustomerName());
         addressTxt.setText(selectedCustomer.getAddress());
         cityComboBox.setItems(DatabaseQuery.getAllCities());
         // need a loop after this to match cityId

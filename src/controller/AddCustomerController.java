@@ -100,7 +100,7 @@ public class AddCustomerController implements Initializable {
             // This will get input from a user
             String customerName = nameTxt.getText();
             String address = addressTxt.getText();
-            int city = cityComboBox.getSelectionModel().getSelectedIndex();
+            int city = cityComboBox.getSelectionModel().getSelectedItem().getCityId();
             String country = countryTxt.getText();
             String zipCode = zipCodeTxt.getText();
             String phone = phoneNumberTxt.getText();

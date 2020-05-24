@@ -59,10 +59,6 @@ public class LoginScreenController implements Initializable {
                 User currentUser = new User();
                 currentUser.setUserId(resultSet.getInt("userId"));
                 currentUser.setUserName(resultSet.getString("userName"));
-//                if(validateUser == currentUser)
-//                    FileLogger.handleLog(username, true);
-//                else
-//                    FileLogger.handleLog(username, false);
 
                 return currentUser;
             }

@@ -86,14 +86,19 @@ public class CustomerQuery {
         PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
         preparedStatement.setInt(1, customer.getCustomerId());
         preparedStatement.execute();
-        int appointmentTableUpdate = preparedStatement.getUpdateCount();
-        if(appointmentTableUpdate == 1){
+
             String deleteCustomer = "DELETE FROM customer WHERE customerId = ?";
             DatabaseQuery.setPreparedStatement(connection, deleteCustomer);
             PreparedStatement preparedStatement1 = DatabaseQuery.getPreparedStatement();
             preparedStatement1.setInt(1, customer.getCustomerId());
             preparedStatement1.execute();
-        }
+
+        String deleteAddress = "DELETE FROM address WHERE addressId = ?";
+        DatabaseQuery.setPreparedStatement(connection, deleteAddress);
+        PreparedStatement preparedStatement2 = DatabaseQuery.getPreparedStatement();
+        preparedStatement2.setInt(1, customer.getAddressId());
+        preparedStatement2.execute();
+
     }
 
     /*

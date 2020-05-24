@@ -44,11 +44,11 @@ public class AddAppointmentController implements Initializable {
     @FXML
     private Button saveAddAppointmentBtn;
     @FXML
-    private ComboBox customerComboBox;
+    private ComboBox<Customer> customerComboBox;
     @FXML
-    private ComboBox startComboBox;
+    private ComboBox<LocalTime> startComboBox;
     @FXML
-    private ComboBox endComboBox;
+    private ComboBox<LocalTime> endComboBox;
 
     private Customer selectedCustomer;
     private int id;
@@ -102,10 +102,16 @@ public class AddAppointmentController implements Initializable {
     in add appointment screen to add appointment if an existing customer is selected
      */
     public void showSelectedCustomer(Customer customer){
+
         selectedCustomer = customer;
         id = customer.getCustomerId();
-        customerComboBox.setValue(customer.getCustomerName());
         customerComboBox.setItems(CustomerQuery.getAllCustomers());
+        for(Customer c : customerComboBox.getItems()){
+            if(c.getCustomerId() == id){
+                customerComboBox.setValue(c);
+                break;
+            }
+        }
     }
 
     @Override

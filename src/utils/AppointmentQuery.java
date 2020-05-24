@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
 import model.User;
+import sun.util.locale.provider.JRELocaleConstants;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -108,12 +109,16 @@ public class AppointmentQuery {
 
             ResultSet resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
-                appointment = new Appointment(resultSet.getInt("appointmentId"),
+                appointment = new Appointment(
+                        resultSet.getInt("appointmentId"),
                         resultSet.getInt("customerId"),
                         resultSet.getString("title"),
                         resultSet.getString("description"),
+                        resultSet.getString("contact"),
+                        resultSet.getString("type"),
                         resultSet.getTimestamp("start").toLocalDateTime(),
                         resultSet.getTimestamp("end").toLocalDateTime()
+                        //resultSet.getString("customerName")
                 );
                 appointmentsCurrentMonth.add(appointment);
             }
@@ -144,12 +149,16 @@ public class AppointmentQuery {
 
             ResultSet resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
-                appointment = new Appointment(resultSet.getInt("appointmentId"),
+                appointment = new Appointment(
+                        resultSet.getInt("appointmentId"),
                         resultSet.getInt("customerId"),
                         resultSet.getString("title"),
                         resultSet.getString("description"),
+                        resultSet.getString("contact"),
+                        resultSet.getString("type"),
                         resultSet.getTimestamp("start").toLocalDateTime(),
                         resultSet.getTimestamp("end").toLocalDateTime()
+                        //resultSet.getString("customerName")
                 );
                 appointmentsCurrentWeek.add(appointment);
             }
@@ -176,12 +185,16 @@ public class AppointmentQuery {
 
             ResultSet resultSet = preparedStatement.getResultSet();
             while(resultSet.next()){
-                Appointment appointment = new Appointment(resultSet.getInt("appointmentId"),
+                Appointment appointment = new Appointment(
+                        resultSet.getInt("appointmentId"),
                         resultSet.getInt("customerId"),
                         resultSet.getString("title"),
                         resultSet.getString("description"),
+                        resultSet.getString("contact"),
+                        resultSet.getString("type"),
                         resultSet.getTimestamp("start").toLocalDateTime(),
                         resultSet.getTimestamp("end").toLocalDateTime()
+                        //resultSet.getString("customerName")
                 );
                 appointmentsAllForCustomer.add(appointment);
             }
@@ -200,7 +213,8 @@ public class AppointmentQuery {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
         try{
             Connection connection = DatabaseConnectionManager.getConnection();
-            String sqlQuery = "SELECT appointment.title, appointment.type, appointment.start, appointment.end, customer.customerName " +
+            String sqlQuery = "SELECT appointment.appointmentId, appointment.customerId, appointment.title, appointment.description, appointment.contact, " +
+                    "appointment.type, appointment.start, appointment.end, customer.customerName " +
                     "FROM appointment INNER JOIN customer ON appointment.customerId=customer.customerId";
             DatabaseQuery.setPreparedStatement(connection, sqlQuery);
             PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
@@ -209,7 +223,11 @@ public class AppointmentQuery {
             ResultSet resultSet = preparedStatement.getResultSet();
             while (resultSet.next()){
                 Appointment appointment = new Appointment(
+                        resultSet.getInt("appointmentId"),
+                        resultSet.getInt("customerId"),
                         resultSet.getString("title"),
+                        resultSet.getString("description"),
+                        resultSet.getString("contact"),
                         resultSet.getString("type"),
                         resultSet.getTimestamp("start").toLocalDateTime(),
                         resultSet.getTimestamp("end").toLocalDateTime(),
@@ -237,7 +255,8 @@ public class AppointmentQuery {
         LocalDate ending = LocalDate.now().plusMonths(1);
         try{
             Connection connection = DatabaseConnectionManager.getConnection();
-            String sqlQuery = "SELECT appointment.title, appointment.type, appointment.start, appointment.end, customer.customerName " +
+            String sqlQuery = "SELECT appointment.appointmentId, appointment.customerId,appointment.title, appointment.description, " +
+                    "appointment.contact, appointment.type, appointment.start, appointment.end, customer.customerName " +
                     "FROM appointment INNER JOIN customer ON appointment.customerId=customer.customerId " +
                     "WHERE start >= ? AND start <= ?";
             DatabaseQuery.setPreparedStatement(connection, sqlQuery);
@@ -249,11 +268,15 @@ public class AppointmentQuery {
             ResultSet resultSet = preparedStatement.getResultSet();
             while (resultSet.next()){
                         appointment = new Appointment(
-                        resultSet.getString("title"),
-                        resultSet.getString("type"),
-                        resultSet.getTimestamp("start").toLocalDateTime(),
-                        resultSet.getTimestamp("end").toLocalDateTime(),
-                        resultSet.getString("customerName")
+                                resultSet.getInt("appointmentId"),
+                                resultSet.getInt("customerId"),
+                                resultSet.getString("title"),
+                                resultSet.getString("description"),
+                                resultSet.getString("contact"),
+                                resultSet.getString("type"),
+                                resultSet.getTimestamp("start").toLocalDateTime(),
+                                resultSet.getTimestamp("end").toLocalDateTime(),
+                                resultSet.getString("customerName")
                 );
                 allAppointmentsCurrentMonth.add(appointment);
             }
@@ -276,7 +299,8 @@ public class AppointmentQuery {
         LocalDate ending = LocalDate.now().plusWeeks(1);
         try{
             Connection connection = DatabaseConnectionManager.getConnection();
-            String sqlQuery = "SELECT appointment.title, appointment.type, appointment.start, appointment.end, customer.customerName " +
+            String sqlQuery = "SELECT appointmentId, appointment.customerId, appointment.title, description, contact, appointment.type, " +
+                    "appointment.start, appointment.end, customer.customerName " +
                     "FROM appointment INNER JOIN customer ON appointment.customerId=customer.customerId " +
                     "WHERE start >= ? AND start <= ?";
             DatabaseQuery.setPreparedStatement(connection, sqlQuery);
@@ -288,7 +312,11 @@ public class AppointmentQuery {
             ResultSet resultSet = preparedStatement.getResultSet();
             while (resultSet.next()){
                 appointment = new Appointment(
+                        resultSet.getInt("appointmentId"),
+                        resultSet.getInt("customerId"),
                         resultSet.getString("title"),
+                        resultSet.getString("description"),
+                        resultSet.getString("contact"),
                         resultSet.getString("type"),
                         resultSet.getTimestamp("start").toLocalDateTime(),
                         resultSet.getTimestamp("end").toLocalDateTime(),

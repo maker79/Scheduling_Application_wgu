@@ -41,9 +41,9 @@ public class ModifyAppointmentController implements Initializable {
     @FXML
     private ComboBox customerComboBox;
     @FXML
-    private ComboBox startComboBox;
+    private ComboBox<LocalTime> startComboBox;
     @FXML
-    private ComboBox endComboBox;
+    private ComboBox<LocalTime> endComboBox;
 
     private Appointment selectedAppointment;
     private int id;

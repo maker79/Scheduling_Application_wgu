@@ -86,6 +86,7 @@ public class AppointmentsController implements Initializable {
         appTypeTblColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         appStartTblColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
         appEndTblColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
+        allAppointmentsBtn.setSelected(true);
     }
 
     /*
