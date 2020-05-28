@@ -12,10 +12,10 @@ import model.City;
 import model.Customer;
 import utils.CustomerQuery;
 import utils.DatabaseQuery;
+import utils.ErrorChecker;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Optional;
 
 public class ModifyCustomerController {
 
@@ -82,13 +82,8 @@ public class ModifyCustomerController {
             String zipCode = zipCodeTxt.getText();
             String phone = phoneNumberTxt.getText();
 
-            CustomerQuery.modifyExistingCustomer(id, customerName, address, city, zipCode, phone, addressId);
-
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setContentText("Confirm that you want to modify this customer.");
-            Optional<ButtonType> choice = alert.showAndWait();
-
-            if (choice.get() == ButtonType.OK) {
+            if(ErrorChecker.checkCustomerFields(customerName, address, cityComboBox.getSelectionModel().getSelectedItem().getCity(), zipCode, phone)){
+                CustomerQuery.modifyExistingCustomer(id, customerName, address, city, zipCode, phone, addressId);
                 stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
                 scene = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
                 stage.setScene(new Scene(scene));

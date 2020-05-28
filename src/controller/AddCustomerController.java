@@ -106,7 +106,7 @@ public class AddCustomerController implements Initializable {
         String zipCode = zipCodeTxt.getText();
         String phone = phoneNumberTxt.getText();
 
-        if (ErrorChecker.checkCustomerFields(customerName, address, cityComboBox.getSelectionModel().getSelectedItem().getCity(), country, zipCode, phone)) {
+        if (ErrorChecker.checkCustomerFields(customerName, address, cityComboBox.getSelectionModel().getSelectedItem().getCity(), zipCode, phone)) {
 
             CustomerQuery.addCustomerToDatabase(customerName, address, city, zipCode, phone);
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -114,15 +114,6 @@ public class AddCustomerController implements Initializable {
             stage.setScene(new Scene(scene));
             stage.show();
         }
-
-
-//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-//        alert.setContentText("Please confirm that you want to add customer to database!");
-//        Optional<ButtonType> choice = alert.showAndWait();
-
-//        if (choice.get() == ButtonType.OK) {
-
-//        }
 
     }
 

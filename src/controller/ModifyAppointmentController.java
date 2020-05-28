@@ -14,6 +14,7 @@ import model.Appointment;
 import model.Customer;
 import utils.AppointmentQuery;
 import utils.DatabaseQuery;
+import utils.ErrorChecker;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,9 +26,9 @@ import java.util.ResourceBundle;
 
 public class ModifyAppointmentController implements Initializable {
 
+    private final ObservableList<String> APPOINTMENT_TYPES = FXCollections.observableArrayList("Presentation", "Scrum", "Consultation");
     Stage stage;
     Parent scene;
-    
     @FXML
     private TextField titleTxt;
     @FXML
@@ -44,12 +45,9 @@ public class ModifyAppointmentController implements Initializable {
     private ComboBox<LocalTime> startComboBox;
     @FXML
     private ComboBox<LocalTime> endComboBox;
-
     private Appointment selectedAppointment;
     private int id;
     private int customerId;
-
-    private final ObservableList<String> APPOINTMENT_TYPES = FXCollections.observableArrayList("Presentation", "Scrum", "Consultation");
 
     @FXML
     void handleCancelModAppointment(ActionEvent event) throws IOException {
@@ -76,18 +74,16 @@ public class ModifyAppointmentController implements Initializable {
         LocalDateTime localDateTimeEnd = LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(),
                 end.getHour(), end.getMinute());
 
-        AppointmentQuery.modifyExistingAppointment(title, type, localDateTimeStart, localDateTimeEnd, id);
+        if(ErrorChecker.overlappingAppointment(localDateTimeStart, localDateTimeEnd)){
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("Confirm that you want to modify this appointment.");
-        Optional<ButtonType> choice = alert.showAndWait();
-
-        if (choice.get() == ButtonType.OK) {
+            AppointmentQuery.modifyExistingAppointment(title, type, localDateTimeStart, localDateTimeEnd, id);
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
             stage.setScene(new Scene(scene));
             stage.show();
+
         }
+
     }
 
       /*

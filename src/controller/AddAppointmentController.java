@@ -15,6 +15,7 @@ import model.User;
 import utils.AppointmentQuery;
 import utils.CustomerQuery;
 import utils.DatabaseQuery;
+import utils.ErrorChecker;
 
 import java.io.IOException;
 import java.net.URL;
@@ -83,18 +84,15 @@ public class AddAppointmentController implements Initializable {
         LocalDateTime localDateTimeEnd = LocalDateTime.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(),
                 end.getHour(), end.getMinute());
 
-        AppointmentQuery.addNewAppointment(customer.getCustomerId(), title, LoginScreenController.validateUser, type, localDateTimeStart, localDateTimeEnd);
+        if(ErrorChecker.overlappingAppointment(localDateTimeStart, localDateTimeEnd)){
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("Please confirm that you want to add appointment to database!");
-        Optional<ButtonType> choice = alert.showAndWait();
-
-        if (choice.get() == ButtonType.OK) {
+            AppointmentQuery.addNewAppointment(customer.getCustomerId(), title, LoginScreenController.validateUser, type, localDateTimeStart, localDateTimeEnd);
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
             stage.setScene(new Scene(scene));
             stage.show();
         }
+
     }
 
     /*
