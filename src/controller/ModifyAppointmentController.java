@@ -122,5 +122,16 @@ public class ModifyAppointmentController implements Initializable {
         startComboBox.setVisibleRowCount(6);
         endComboBox.getSelectionModel().select(LocalTime.of(8, 30));
         endComboBox.setVisibleRowCount(6);
+
+        dateDatePicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(empty || date.isBefore(LocalDate.now()));
+                if(date.isBefore(LocalDate.now())) {
+                    setStyle("-fx-background-color: #b1c3c4;");
+                }
+            }
+        });
     }
 }

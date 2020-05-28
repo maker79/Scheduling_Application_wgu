@@ -1,16 +1,23 @@
 package utils;
 
+import controller.LoginScreenController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.scene.control.Alert;
 import model.Appointment;
 import model.User;
 import sun.util.locale.provider.JRELocaleConstants;
 
+import javax.jws.soap.SOAPBinding;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 public class AppointmentQuery {
+
 
     /*
      ************************ Appointments query methods ***************************
@@ -331,5 +338,44 @@ public class AppointmentQuery {
         }
         return null;
     }
+
+    /*
+    This method will check if there is an appointment within 15 min
+    of user's log in.
+     */
+    public static Appointment appointmentInFifteenMinutes(){
+        Appointment appointment;
+        String contact = LoginScreenController.validateUser.getUserName();
+
+        try {
+            Connection connection = DatabaseConnectionManager.getConnection();
+            String appointment15min = "SELECT appointmentId, customerId, title, description, contact, type, start, end " +
+                    "FROM appointment WHERE start BETWEEN NOW() AND NOW()+15 AND contact=?";
+            DatabaseQuery.setPreparedStatement(connection, appointment15min);
+            PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
+            preparedStatement.setString(1, contact);
+
+            ResultSet resultSet = preparedStatement.getResultSet();
+            if (resultSet.next()) {
+                        appointment = new Appointment(
+                        resultSet.getInt("appointmentId"),
+                        resultSet.getInt("customerId"),
+                        resultSet.getString("title"),
+                        resultSet.getString("description"),
+                        resultSet.getString("contact"),
+                        resultSet.getString("type"),
+                        resultSet.getTimestamp("start").toLocalDateTime(),
+                        resultSet.getTimestamp("end").toLocalDateTime()
+                );
+                return appointment;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 
 }

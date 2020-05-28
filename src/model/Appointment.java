@@ -37,34 +37,6 @@ public class Appointment {
         this.end = end;
     }
 
-//        public Appointment(int appointmentId, int customerId, String title, String description, LocalDateTime start, LocalDateTime end, String user) {
-//        this.appointmentId = appointmentId;
-//        this.customerId = customerId;
-//        this.title = title;
-//        this.description = description;
-//        this.start = start;
-//        this.end = end;
-//        this.user = user;
-//    }
-//
-//    public Appointment(String title, String type, LocalDateTime start, LocalDateTime end, String customerName) {
-//        this.title = title;
-//        this.type = type;
-//        this.start = start;
-//        this.end = end;
-//        this.customerName = customerName;
-//    }
-//
-//    public Appointment(int appointmentId, int customerId, String title, String description, LocalDateTime start, LocalDateTime end) {
-//        this.appointmentId = appointmentId;
-//        this.customerId = customerId;
-//        this.title = title;
-//        this.description = description;
-//        this.start = start;
-//        this.end = end;
-//    }
-
-
     public int getAppointmentId() {
         return appointmentId;
     }

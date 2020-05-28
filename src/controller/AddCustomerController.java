@@ -15,6 +15,7 @@ import model.Customer;
 import utils.CustomerQuery;
 import utils.DatabaseConnectionManager;
 import utils.DatabaseQuery;
+import utils.ErrorChecker;
 
 import java.io.IOException;
 import java.net.URL;
@@ -63,7 +64,6 @@ public class AddCustomerController implements Initializable {
     private ComboBox<City> cityComboBox;
 
 
-
     @FXML
     void onActionCancelAddCustomer(ActionEvent event) throws IOException {
 
@@ -72,6 +72,7 @@ public class AddCustomerController implements Initializable {
         stage.setScene(new Scene(scene));
         stage.show();
     }
+
     /*
     // This method will set Country name depending on which city has been chosen form cityComboBox
     */
@@ -89,7 +90,7 @@ public class AddCustomerController implements Initializable {
 //            countryTxt.setText("UK");
 //        }
         City city = cityComboBox.getSelectionModel().getSelectedItem();
-        if(city!=null){
+        if (city != null) {
             countryTxt.setText(city.getCountryName());
         }
     }
@@ -97,26 +98,31 @@ public class AddCustomerController implements Initializable {
     @FXML
     void onActionSaveAddCustomer(ActionEvent event) throws IOException {
 
-            // This will get input from a user
-            String customerName = nameTxt.getText();
-            String address = addressTxt.getText();
-            int city = cityComboBox.getSelectionModel().getSelectedItem().getCityId();
-            String country = countryTxt.getText();
-            String zipCode = zipCodeTxt.getText();
-            String phone = phoneNumberTxt.getText();
+        // This will get input from a user
+        String customerName = nameTxt.getText();
+        String address = addressTxt.getText();
+        int city = cityComboBox.getSelectionModel().getSelectedItem().getCityId();
+        String country = countryTxt.getText();
+        String zipCode = zipCodeTxt.getText();
+        String phone = phoneNumberTxt.getText();
+
+        if (ErrorChecker.checkCustomerFields(customerName, address, cityComboBox.getSelectionModel().getSelectedItem().getCity(), country, zipCode, phone)) {
 
             CustomerQuery.addCustomerToDatabase(customerName, address, city, zipCode, phone);
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("Please confirm that you want to add customer to database!");
-        Optional<ButtonType> choice = alert.showAndWait();
-
-        if (choice.get() == ButtonType.OK) {
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
             stage.setScene(new Scene(scene));
             stage.show();
         }
+
+
+//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+//        alert.setContentText("Please confirm that you want to add customer to database!");
+//        Optional<ButtonType> choice = alert.showAndWait();
+
+//        if (choice.get() == ButtonType.OK) {
+
+//        }
 
     }
 
