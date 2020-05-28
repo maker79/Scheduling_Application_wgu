@@ -49,6 +49,9 @@ public class ModifyAppointmentController implements Initializable {
     private int id;
     private int customerId;
 
+    /*
+    This method will cancel modifying appointment and navigate back to the Appointments screen
+     */
     @FXML
     void handleCancelModAppointment(ActionEvent event) throws IOException {
 
@@ -59,6 +62,10 @@ public class ModifyAppointmentController implements Initializable {
 
     }
 
+    /*
+    This method will handle saving modified appointment to the database and
+     it will check for overlapping appointments
+     */
     @FXML
     void handleSaveModAppointment(ActionEvent event) throws IOException {
 
@@ -74,7 +81,7 @@ public class ModifyAppointmentController implements Initializable {
         LocalDateTime localDateTimeEnd = LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(),
                 end.getHour(), end.getMinute());
 
-//        if(ErrorChecker.overlappingAppointment(localDateTimeStart, localDateTimeEnd)){
+        if(ErrorChecker.overlappingAppointmentModified(id, localDateTimeStart, localDateTimeEnd)){
 
             AppointmentQuery.modifyExistingAppointment(title, type, localDateTimeStart, localDateTimeEnd, id);
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -82,7 +89,7 @@ public class ModifyAppointmentController implements Initializable {
             stage.setScene(new Scene(scene));
             stage.show();
 
-//        }
+        }
 
     }
 
@@ -118,7 +125,7 @@ public class ModifyAppointmentController implements Initializable {
         startComboBox.setVisibleRowCount(6);
         endComboBox.getSelectionModel().select(LocalTime.of(8, 30));
         endComboBox.setVisibleRowCount(6);
-
+        // Lambda expression to improve readability and efficiency, disables past dates in date picker
         dateDatePicker.setDayCellFactory(picker -> new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {

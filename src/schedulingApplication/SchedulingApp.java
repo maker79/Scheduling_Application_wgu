@@ -24,7 +24,8 @@ public class SchedulingApp extends Application {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         // make a connection to a database
         DatabaseConnectionManager.makeConnection();
-//        Locale.setDefault(new Locale("sr"));
+
+//        Locale.setDefault(new Locale("sr"));   // used to test login screen with serbian language
         launch(args);
 
         // closing a connection

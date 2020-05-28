@@ -41,6 +41,9 @@ public class ReportsController implements Initializable {
     @FXML
     private Label displayLabel;
 
+    /*
+    This method will navigate user back to the Main Screen
+     */
     @FXML
     void onActionHandleBackToMenu(ActionEvent event) throws IOException {
 

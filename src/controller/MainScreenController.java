@@ -36,6 +36,9 @@ public class MainScreenController implements Initializable {
     @FXML
     private Button logOffBtn;
 
+    /*
+    This method will navigate user to the Appointments screen
+     */
     @FXML
     void handleAppointmentsBtn(ActionEvent event) throws IOException {
 
@@ -45,7 +48,9 @@ public class MainScreenController implements Initializable {
         stage.show();
 
     }
-
+    /*
+    This method will navigate user to the Customers screen
+     */
     @FXML
     void handleCustomersBtn(ActionEvent event) throws IOException {
 
@@ -55,6 +60,9 @@ public class MainScreenController implements Initializable {
         stage.show();
     }
 
+    /*
+    This method will handle logoff
+     */
     @FXML
     void handleLogOff(ActionEvent event) throws IOException {
 
@@ -68,6 +76,9 @@ public class MainScreenController implements Initializable {
 
     }
 
+    /*
+    This method will navigate to the Reports screen
+     */
     @FXML
     void handleReportsBtn(ActionEvent event) throws IOException {
 
@@ -80,7 +91,7 @@ public class MainScreenController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+            // this will display an alert if there is an appointment within fifteen min of login for current user
             Appointment appointment = AppointmentQuery.appointmentInFifteenMinutes();
             if(appointment != null){
                 String textToDisplay = String.format("You have an appointment with %s at %s", appointment.getCustomerName(), appointment.getStart());

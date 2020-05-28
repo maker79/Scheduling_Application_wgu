@@ -62,6 +62,9 @@ public class ModifyCustomerController {
     private int id;
     private int addressId;
 
+    /*
+    This mehtod will cancel modifying customer and navigate back to the Customers screen
+     */
     @FXML
     void onActionCancelModifyCustomer(ActionEvent event) throws IOException {
 
@@ -72,6 +75,9 @@ public class ModifyCustomerController {
 
     }
 
+    /*
+    This method will save modified cusotomer to the database and perform validity of user input
+     */
     @FXML
     void onActionSaveModifyCustomer(ActionEvent event) {
         try{

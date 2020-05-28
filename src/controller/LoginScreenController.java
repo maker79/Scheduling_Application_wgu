@@ -50,6 +50,7 @@ public class LoginScreenController implements Initializable {
     ResourceBundle resourceBundle = ResourceBundle.getBundle("lang/Nat", Locale.getDefault());
     public static User validateUser = null;
 
+    // currently only user(consultant) in the database is 'test' user with a password 'test'
     public static User validateLoginAttempt(String username, String password) {
 
         try {

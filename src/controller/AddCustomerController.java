@@ -63,7 +63,9 @@ public class AddCustomerController implements Initializable {
     @FXML
     private ComboBox<City> cityComboBox;
 
-
+    /*
+    This method will cancel adding customer and navigate back to the Customer screen
+     */
     @FXML
     void onActionCancelAddCustomer(ActionEvent event) throws IOException {
 
@@ -79,22 +81,15 @@ public class AddCustomerController implements Initializable {
     @FXML
     private void onActionSetCountry(ActionEvent actionEvent) {
 
-//        String currentCity = cityComboBox.getSelectionModel().getSelectedItem().toString();
-//        if (currentCity.equals("New York") || currentCity.equals("Los Angeles") || currentCity.equals("Phoenix")) {
-//            countryTxt.setText("USA");
-//        } else if (currentCity.equals("Toronto") || currentCity.equals("Vancouver")) {
-//            countryTxt.setText("Canada");
-//        } else if (currentCity.equals("Oslo")) {
-//            countryTxt.setText("Norway");
-//        } else {
-//            countryTxt.setText("UK");
-//        }
         City city = cityComboBox.getSelectionModel().getSelectedItem();
         if (city != null) {
             countryTxt.setText(city.getCountryName());
         }
     }
 
+    /*
+    This method will save a newly created customer to the database
+     */
     @FXML
     void onActionSaveAddCustomer(ActionEvent event) throws IOException {
 

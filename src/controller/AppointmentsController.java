@@ -74,7 +74,7 @@ public class AppointmentsController implements Initializable {
 
     // ********** Customer side of the screen *******************
     /*
-    This method will clear customer selection
+    This method will clear customer selection and set all appointments to the appointment table
      */
     @FXML
     private void handleClearCustomerTable(ActionEvent actionEvent) {
@@ -185,6 +185,11 @@ public class AppointmentsController implements Initializable {
 
     }
 
+    /*
+    This method will switch to add new appointment screen if no customer is selected in customer table,
+    otherwise, if customer is selected it will take that customer, transfer the customer name to the
+    add appointment screen giving user option to create an appointment for existing customer
+     */
     @FXML
     void handleAddNewAppointment(ActionEvent event) throws IOException {
 
@@ -212,7 +217,10 @@ public class AppointmentsController implements Initializable {
 
 
     }
-
+    /*
+    This method will delete selected appointment from database.
+    Also utilizes a lambda expression
+     */
     @FXML
     void handleDeleteAppointment(ActionEvent event) {
 
@@ -220,18 +228,23 @@ public class AppointmentsController implements Initializable {
         if(selectedAppointment != null){
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setContentText("Please confirm that you want to delete selected appointment!");
-            Optional<ButtonType> response = alert.showAndWait();
-            if(response.get() == ButtonType.OK){
-                AppointmentQuery.deleteAppointment(selectedAppointment);
-                appointmentsTbl.setItems(AppointmentQuery.getAllAppointments());
-            } else{
-                Alert alert1 = new Alert(Alert.AlertType.WARNING);
-                alert1.setContentText("Please select appointment to delete!");
-                alert1.showAndWait();
-            }
+            alert.showAndWait().ifPresent((response -> {
+                if(response == ButtonType.OK){
+                    try{
+                        AppointmentQuery.deleteAppointment(selectedAppointment);
+                        appointmentsTbl.setItems(AppointmentQuery.getAllAppointments());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }));
         }
     }
 
+    /*
+    This method will navigate user back to the main screen
+     */
     @FXML
     void handleGoBackToMainScreen(ActionEvent event) throws IOException {
 
@@ -242,6 +255,9 @@ public class AppointmentsController implements Initializable {
 
     }
 
+    /*
+    This method will pick selected appointment and open up Modify appointment screen
+     */
     @FXML
     void handleModifyAppointment(ActionEvent event) throws IOException {
 

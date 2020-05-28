@@ -55,6 +55,9 @@ public class AddAppointmentController implements Initializable {
     private int id;
     private final ObservableList<String> APPOINTMENT_TYPES = FXCollections.observableArrayList("Presentation", "Scrum", "Consultation");
 
+    /*
+    This method will cancel creating new appointment and go back to the Appointments screen
+     */
     @FXML
     void handleCancelAddingAppointment(ActionEvent event) throws IOException {
 
@@ -69,7 +72,10 @@ public class AddAppointmentController implements Initializable {
         stage.show();
 
     }
-
+    /*
+    This method will save newly created appointment to the database
+    and check if there is an overlapping appointment
+     */
     @FXML
     void handleSaveAddedAppointment(ActionEvent event) throws IOException {
         // Getting input from user
@@ -133,7 +139,7 @@ public class AddAppointmentController implements Initializable {
         startComboBox.setVisibleRowCount(6);
         endComboBox.getSelectionModel().select(LocalTime.of(8, 30));
         endComboBox.setVisibleRowCount(6);
-
+        // Lambda expression to improve readability and efficiency, disables past dates in date picker
         dateDatePicker.setDayCellFactory(picker -> new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
