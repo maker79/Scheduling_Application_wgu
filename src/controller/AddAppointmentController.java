@@ -115,6 +115,8 @@ public class AddAppointmentController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        // Creating business hours 8:00am till 5:00pm which will be displayed in a start and end combo box
+        // allowing user to create an appointment in that time interval.
         LocalTime start = LocalTime.of(8, 0);
         LocalTime end = LocalTime.of(17, 0);
 
@@ -143,4 +145,6 @@ public class AddAppointmentController implements Initializable {
             }
         });
     }
+
+
 }

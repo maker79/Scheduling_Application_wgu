@@ -81,14 +81,14 @@ public class MainScreenController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-//            Appointment appointment = AppointmentQuery.appointmentInFifteenMinutes();
-//            if(appointment != null){
-//                String textToDisplay = String.format("You have an appointment with %s at %s", appointment.getCustomerName(), appointment.getStart());
-//                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//                alert.setTitle("Appointment remainder");
-//                alert.setContentText(textToDisplay);
-//                alert.showAndWait();
-//            }
+            Appointment appointment = AppointmentQuery.appointmentInFifteenMinutes();
+            if(appointment != null){
+                String textToDisplay = String.format("You have an appointment with %s at %s", appointment.getCustomerName(), appointment.getStart());
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Appointment remainder");
+                alert.setContentText(textToDisplay);
+                alert.showAndWait();
+            }
 
     }
 }

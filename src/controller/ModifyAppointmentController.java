@@ -74,7 +74,7 @@ public class ModifyAppointmentController implements Initializable {
         LocalDateTime localDateTimeEnd = LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(),
                 end.getHour(), end.getMinute());
 
-        if(ErrorChecker.overlappingAppointment(localDateTimeStart, localDateTimeEnd)){
+//        if(ErrorChecker.overlappingAppointment(localDateTimeStart, localDateTimeEnd)){
 
             AppointmentQuery.modifyExistingAppointment(title, type, localDateTimeStart, localDateTimeEnd, id);
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -82,7 +82,7 @@ public class ModifyAppointmentController implements Initializable {
             stage.setScene(new Scene(scene));
             stage.show();
 
-        }
+//        }
 
     }
 

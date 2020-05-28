@@ -349,11 +349,13 @@ public class AppointmentQuery {
 
         try {
             Connection connection = DatabaseConnectionManager.getConnection();
-            String appointment15min = "SELECT appointmentId, customerId, title, description, contact, type, start, end " +
-                    "FROM appointment WHERE start BETWEEN NOW() AND NOW()+15 AND contact=?";
+            String appointment15min = "SELECT appointmentId, appointment.customerId, customer.customerName, title, description, contact, type, start, end " +
+                    "FROM appointment, customer WHERE start BETWEEN NOW() AND NOW()+ INTERVAL 15 MINUTE AND contact=? " +
+                    "AND customer.customerId=appointment.customerId";
             DatabaseQuery.setPreparedStatement(connection, appointment15min);
             PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
             preparedStatement.setString(1, contact);
+            preparedStatement.execute();
 
             ResultSet resultSet = preparedStatement.getResultSet();
             if (resultSet.next()) {
@@ -365,7 +367,8 @@ public class AppointmentQuery {
                         resultSet.getString("contact"),
                         resultSet.getString("type"),
                         resultSet.getTimestamp("start").toLocalDateTime(),
-                        resultSet.getTimestamp("end").toLocalDateTime()
+                        resultSet.getTimestamp("end").toLocalDateTime(),
+                        resultSet.getString("customerName")
                 );
                 return appointment;
             }

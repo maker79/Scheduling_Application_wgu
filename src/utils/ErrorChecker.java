@@ -1,5 +1,6 @@
 package utils;
 
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import model.Appointment;
 
@@ -12,13 +13,23 @@ public class ErrorChecker {
      */
     public static boolean overlappingAppointment(LocalDateTime newAppStart, LocalDateTime newAppEnd){
 
-            for(Appointment apOverlap : AppointmentQuery.getAllAppointments()) {
+        ObservableList<Appointment> appList = AppointmentQuery.getAllAppointments();
+            for(Appointment apOverlap : appList) {
 
                 LocalDateTime start = apOverlap.getStart();
                 LocalDateTime end = apOverlap.getEnd();
             try {
-                if (newAppStart.isBefore(end) || (newAppEnd.isAfter(start))) {
-
+                boolean overlap = false;
+                if ((start.isEqual(newAppStart) || start.isAfter(newAppStart)) && (start.isBefore(newAppEnd)))  {
+                    overlap = true;
+                }
+                if (end.isAfter(newAppStart) && (end.isEqual(newAppEnd) || end.isBefore(newAppEnd))){
+                    overlap = true;
+                }
+                if((start.isBefore(newAppStart) || start.isEqual(newAppStart)) && (end.isEqual(newAppEnd) || end.isAfter(newAppEnd))){
+                    overlap = true;
+                }
+                if(overlap){
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Warning!");
                     alert.setContentText("Overlapping appointment times. Please choose another time.");
@@ -26,6 +37,7 @@ public class ErrorChecker {
 
                     return false;
                         }
+
             } catch (Exception e) {
                     e.printStackTrace();
                     }
@@ -34,6 +46,11 @@ public class ErrorChecker {
         return true;
 
     }
+
+    /*
+    This method will check if end time is before the start
+     */
+
 
     /*
     This method will check for invalid customer data
@@ -51,11 +68,11 @@ public class ErrorChecker {
         if(city.isEmpty())
             errors.append("*Please pick a city.\n");
 
-        if(zipCode.isEmpty() || !(zipCode.matches("[0-9]")))
-            errors.append("*Zip code field cannot be empty and it can contain only numbers\n");
+        if(zipCode.isEmpty())
+            errors.append("*Zip code field cannot be empty\n");
 
-        if(phone.isEmpty() || !(phone.matches("[0-9]\\+\\-")))
-            errors.append("*Phone number field cannot be empty an it can contain only numbers\n");
+        if(phone.isEmpty())
+            errors.append("*Phone number field cannot be empty\n");
 
         if(errors.length() > 0){
             Alert alert = new Alert(Alert.AlertType.WARNING);
