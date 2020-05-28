@@ -58,7 +58,7 @@ public class CustomersController implements Initializable {
         if (selectedCustomer != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setContentText("Please confirm that you want to delete selected customer!");
-            // lambda expression to improve readability and efficiency while deleting customer from database
+            // lambda expression to improve readability and efficiency while deleting customer from database and displaying an alert
             alert.showAndWait().ifPresent((response -> {
                 if (response == ButtonType.OK) {
                     try {

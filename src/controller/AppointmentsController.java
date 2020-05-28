@@ -228,6 +228,7 @@ public class AppointmentsController implements Initializable {
         if(selectedAppointment != null){
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setContentText("Please confirm that you want to delete selected appointment!");
+            // Lambda expression to help maximize efficiency while deleting an appointment from database and displaying an alert
             alert.showAndWait().ifPresent((response -> {
                 if(response == ButtonType.OK){
                     try{
