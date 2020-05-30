@@ -47,7 +47,7 @@ public class ModifyCustomerController {
     private int addressId;
 
     /*
-    This mehtod will cancel modifying customer and navigate back to the Customers screen
+    This method will cancel modifying customer and navigate back to the Customers screen
      */
     @FXML
     void onActionCancelModifyCustomer(ActionEvent event) throws IOException {
