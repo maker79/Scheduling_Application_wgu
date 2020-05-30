@@ -42,7 +42,7 @@
                 <TextField fx:id="zipCodeTxt" maxHeight="-Infinity" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                 <TextField fx:id="phoneNumberTxt" maxHeight="-Infinity" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                 <ComboBox fx:id="cityComboBox" maxHeight="-Infinity" onAction="#onActionSetCountry" prefHeight="35.0" prefWidth="203.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label fx:id="nameLabel" prefHeight="34.0" prefWidth="197.0" GridPane.columnIndex="1" />
+            <TextField fx:id="customerNameTxt" prefHeight="38.0" prefWidth="199.0" GridPane.columnIndex="1" />
             </children>
         </GridPane>
         <Button fx:id="cancelModifyCustomerBtn" layoutX="425.0" layoutY="423.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onActionCancelModifyCustomer" prefWidth="80.0" text="Cancel" />
