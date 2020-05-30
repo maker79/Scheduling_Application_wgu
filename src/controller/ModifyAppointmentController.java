@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import model.Appointment;
 import model.Customer;
 import utils.AppointmentQuery;
+import utils.CustomerQuery;
 import utils.DatabaseQuery;
 import utils.ErrorChecker;
 
@@ -40,7 +41,7 @@ public class ModifyAppointmentController implements Initializable {
     @FXML
     private Button saveModAppointmentBtn;
     @FXML
-    private ComboBox customerComboBox;
+    private ComboBox<Customer> customerComboBox;
     @FXML
     private ComboBox<LocalTime> startComboBox;
     @FXML
@@ -71,6 +72,7 @@ public class ModifyAppointmentController implements Initializable {
 
         Appointment appointment = selectedAppointment;
         id = appointment.getAppointmentId();
+        Customer customer = (Customer) customerComboBox.getSelectionModel().getSelectedItem();
         String title = titleTxt.getText();
         String type = (String) typeComboBox.getValue();
         LocalDate date = dateDatePicker.getValue();
@@ -83,7 +85,7 @@ public class ModifyAppointmentController implements Initializable {
 
         if(ErrorChecker.overlappingAppointmentModified(id, localDateTimeStart, localDateTimeEnd)){
 
-            AppointmentQuery.modifyExistingAppointment(title, type, localDateTimeStart, localDateTimeEnd, id);
+            AppointmentQuery.modifyExistingAppointment(customer.getCustomerId(), title, type, localDateTimeStart, localDateTimeEnd, id);
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
             stage.setScene(new Scene(scene));
@@ -100,7 +102,14 @@ public class ModifyAppointmentController implements Initializable {
     public void showAppointmentToModify(Appointment appointment){
         selectedAppointment = appointment;
         id = appointment.getAppointmentId();
-        customerComboBox.setValue(appointment.getCustomerName());
+        customerId = appointment.getCustomerId();
+        customerComboBox.setItems(CustomerQuery.getAllCustomers());
+        for(Customer c : customerComboBox.getItems()){
+            if(c.getCustomerId() == appointment.getCustomerId()){
+                customerComboBox.setValue(c);
+                break;
+            }
+        }
         titleTxt.setText(appointment.getTitle());
         typeComboBox.setValue(appointment.getType());
         dateDatePicker.setValue(appointment.getStart().toLocalDate());

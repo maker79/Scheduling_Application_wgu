@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.Alert;
 import model.Appointment;
+import model.Customer;
 import model.User;
 import sun.util.locale.provider.JRELocaleConstants;
 
@@ -60,18 +61,19 @@ public class AppointmentQuery {
     /*
     This method will modify an existing appointment
      */
-    public static void modifyExistingAppointment(String title, String type, LocalDateTime start, LocalDateTime end, int id){
+    public static void modifyExistingAppointment(int customerId, String title, String type, LocalDateTime start, LocalDateTime end, int id){
         try {
             Connection connection = DatabaseConnectionManager.getConnection();
-            String updateAppointment = "UPDATE appointment SET title=?, type=?, start=?, end=?, lastUpdate=CURRENT_TIMESTAMP " +
+            String updateAppointment = "UPDATE appointment SET customerId=?, title=?, type=?, start=?, end=?, lastUpdate=CURRENT_TIMESTAMP " +
                     "WHERE appointmentId=?";
             DatabaseQuery.setPreparedStatement(connection, updateAppointment);
             PreparedStatement preparedStatement = DatabaseQuery.getPreparedStatement();
-            preparedStatement.setString(1, title);
-            preparedStatement.setString(2, type);
-            preparedStatement.setTimestamp(3, Timestamp.valueOf(start));
-            preparedStatement.setTimestamp(4, Timestamp.valueOf(end));
-            preparedStatement.setInt(5, id);
+            preparedStatement.setInt(1, customerId);
+            preparedStatement.setString(2, title);
+            preparedStatement.setString(3, type);
+            preparedStatement.setTimestamp(4, Timestamp.valueOf(start));
+            preparedStatement.setTimestamp(5, Timestamp.valueOf(end));
+            preparedStatement.setInt(6, id);
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
